@@ -1,0 +1,201 @@
+%{
+// * Declaraciones de código Java
+// * Se sitúan al comienzo del archivo generado
+// * El package lo añade yacc si utilizamos la opción -Jpackage
+import scanner.Scanner;
+import java.io.Reader;
+%}
+
+// * Declaraciones Yacc
+%token INT_CONSTANT
+
+%token REAL_CONSTANT
+
+%token ID
+
+%token CHAR_CONSTANT
+	
+%token INPUT
+	
+%token PRINT
+	
+%token DEF
+	
+%token WHILE
+	
+%token IF
+	
+%token ELSE
+	
+%token INT
+	
+%token DOUBLE
+	
+%token CHAR
+	
+%token STRUCT
+	
+%token RETURN
+	
+%token VOID
+
+%token MAIN
+
+%token MENORIGUAL
+	
+%token MAYORIGUAL
+	
+%token EQUIVALENTE
+	
+%token DISTINTO 
+
+%token OR
+	
+%token AND
+
+
+%right '='
+%left AND OR
+%left '>' '<' DISTINTO MAYORIGUAL MENORIGUAL EQUIVALENTE
+%left '+' '-'
+%left '*' '/' '%'
+%nonassoc '!'
+%left '.'
+%nonassoc '[' ']'
+%nonassoc '(' ')'
+
+%%
+// * Gramática y acciones Yacc
+
+programa : definiciones 
+		 ;		  	
+
+definiciones : 
+			 |definiciones definicion
+			 ; 	
+
+definicion: variables 
+		  | funciones
+		  ;
+		  
+tipo : 	 INT 
+       | DOUBLE
+       | CHAR
+       | expression '[' expression ']' 
+    
+variables : variable
+		 | ID ',' variables
+		 
+variable :  ID ':' tipo ';'
+		 |  struct ';'
+
+funciones: funcion 
+        |  funcion funciones
+        
+funcion : DEF ID '(' parametros ')' ':' tipo body
+		| DEF ID '(' ')' ':' VOID '{' '}' 
+		| main
+		
+parametros: parametro
+		  | parametro ',' parametros
+		  
+parametro : ID ':' tipo
+		  |expression
+
+body: '{' lineas '}'
+
+lineas: linea 
+	  | linea lineas
+	  
+linea: variables
+	 | sentencias
+	 ;	  
+	  
+sentencias : sentencia
+           | sentencia sentencias
+           
+sentencia : ID '('')' ';'
+		  | expression ';'
+		  | RETURN expression ';'
+		  | while
+		  | print
+		  |	ID '(' parametros ')' ';'	  
+
+print: PRINT sentencias
+
+expression : expression '+' expression
+         | expression '-' expression
+         | expression '*' expression
+         | expression '/' expression
+         | expression '%' expression
+         | expression '=' expression
+         | expression '.' expression
+         | '(' expression ')'
+         | '[' expression ']'
+         | '!' expression
+         | '-' expression
+         | expression '>' expression
+         | expression '<' expression
+         | expression DISTINTO expression
+         | expression MAYORIGUAL expression
+         | expression MENORIGUAL expression
+         | expression EQUIVALENTE expression
+         | expression AND expression
+         | expression OR expression
+         | cast
+         | REAL_CONSTANT
+         | INT_CONSTANT
+         | CHAR_CONSTANT 
+         | ID
+         | tipo
+         ;
+         
+cast :  '(' tipo ')' expression            
+
+struct : ID ':' STRUCT '{' cuerpoStruct '}'
+
+cuerpoStruct : paramStruct 
+             | cuerpoStruct paramStruct
+
+paramStruct: ID ':' tipo ';'
+
+while : WHILE expression ':' '{' sentencias '}'                        		               			  	
+
+main: DEF ID '('')' ':' VOID body
+           
+%%
+
+// * Código Java
+// * Se crea una clase "Parser", lo que aquí ubiquemos será:
+//	- Atributos, si son variables
+//	- Métodos, si son funciones
+//   de la clase "Parser"
+
+// * Estamos obligados a implementar:
+//	int yylex()
+//	void yyerror(String)
+
+// * Referencia al analizador léxico
+private Scanner scanner;
+
+// * Llamada al analizador léxico
+private int yylex () {
+    int token=0;
+    try { 
+		token=scanner.yylex(); 	
+		this.yylval = scanner.getYylval();
+    } catch(Throwable e) {
+	    System.err.println ("Lexical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+e); 
+    }
+    return token;
+}
+
+// * Manejo de Errores Sintácticos
+public void yyerror (String error) {
+    System.err.println ("Syntactical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+error);
+}
+
+// * Constructor del Sintáctico
+public Parser(Scanner scanner) {
+	this.scanner = scanner;
+}

@@ -1,0 +1,13 @@
+# Variable and function definitions
+i, j, n: int;
+c: char;
+
+# Empty function
+def p(): void {
+	a= -4;
+	 }
+
+def main(): void {
+    	i=i+1;
+}
+

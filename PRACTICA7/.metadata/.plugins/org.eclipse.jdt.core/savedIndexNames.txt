@@ -1,0 +1,7 @@
+INDEX VERSION 1.130+F:\TERCERO\SegundoSemestre\DLP\PRACTICA7\.metadata\.plugins\org.eclipse.jdt.core
+3126583201.index
+3404034052.index
+3288504533.index
+114568791.index
+2904607714.index
+984927583.index

@@ -1,0 +1,19 @@
+"""
+	Control Test
+	PLD 17/18
+"""
+
+# Global variables
+integer:int;
+character:char;
+real:double;
+
+# Main program
+# def no_main ():void{ # Uncomment to test
+def main():void { # Uncomment to test
+	date.day = 9;
+	date.mounth = 3;
+	date.year = 2016;
+	
+}
+# def no_function():void {} # Uncomment to test

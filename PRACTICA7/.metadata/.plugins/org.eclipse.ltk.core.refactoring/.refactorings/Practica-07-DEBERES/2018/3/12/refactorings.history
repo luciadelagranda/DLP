@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;SymbolTable.java&apos; to &apos;Practica-07-DEBERES/src/symbolTable&apos;&#x0D;&#x0A;- Original project: &apos;Practica-07-DEBERES&apos;&#x0D;&#x0A;- Destination element: &apos;Practica-07-DEBERES/src/symbolTable&apos;&#x0D;&#x0A;- Original element: &apos;visitor.SymbolTable.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;symbolTable" element1="/src&lt;visitor{SymbolTable.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1521666635087" units="1" version="1.0"/>
+</session>
