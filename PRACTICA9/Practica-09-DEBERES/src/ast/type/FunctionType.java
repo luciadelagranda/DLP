@@ -23,7 +23,7 @@ public class FunctionType extends TypeAbstract implements Type{
 		return "FuncionType [parameters=" + parameters + ", returnType=" + returnType + "]";
 	}
 
-	public Type getType() {
+	public Type getReturnType() {
 		return returnType;
 	}
 	

@@ -5,6 +5,8 @@ import ast.Assignment;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
+import ast.Definition;
+import ast.Expression;
 import ast.FieldAccess;
 import ast.FunDefinition;
 import ast.IfStatement;
@@ -18,6 +20,7 @@ import ast.Read;
 import ast.RealLiteral;
 import ast.RecordField;
 import ast.Return;
+import ast.Statement;
 import ast.UnaryMinus;
 import ast.UnaryNot;
 import ast.VarDefinition;
@@ -37,43 +40,45 @@ public class AbstractVisitor implements Visitor{
 
 	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {
-		// TODO Auto-generated method stub
+		arithmetic.getLeft().accept(this,param);
+		arithmetic.getRight().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(ArrayType arrayType, Object param) {
-		// TODO Auto-generated method stub
+		arrayType.getOf().accept(this,param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Assignment assignment, Object param) {
-		// TODO Auto-generated method stub
+		assignment.getLeft().accept(this,param);
+		assignment.getRight().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Cast cast, Object param) {
-		// TODO Auto-generated method stub
+		cast.getExp().accept(this,param);
+		cast.getType().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(CharLiteral charLiteral, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(CharType charType, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(Comparison comparison, Object param) {
-		// TODO Auto-generated method stub
+		comparison.getExp1().accept(this,param);
+		comparison.getExp2().accept(this, param);
 		return null;
 	}
 
@@ -86,145 +91,160 @@ public class AbstractVisitor implements Visitor{
 
 	@Override
 	public Object visit(FunctionType functionType, Object param) {
-		// TODO Auto-generated method stub
+		functionType.getReturnType().accept(this, param);
+		for( VarDefinition def : functionType.getParameters())
+			def.accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
-		// TODO Auto-generated method stub
+		for(Statement statement: funDefinition.getStatements())
+			statement.accept(this, param);
+		funDefinition.getType().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(IfStatement ifStatement, Object param) {
-		// TODO Auto-generated method stub
+		ifStatement.getCondition().accept(this, param);
+		for(Statement statement: ifStatement.getIfBody())
+			statement.accept(this, param);
+		if(ifStatement.getElseBody()!= null) {
+		for(Statement statement: ifStatement.getElseBody())
+			statement.accept(this, param);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(Indexin indexin, Object param) {
-		// TODO Auto-generated method stub
+		indexin.getExp1().accept(this, param);
+		indexin.getExp2().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(IntLiteral intLiteral, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(InvocationExpr invocationExpr, Object param) {
-		// TODO Auto-generated method stub
+		invocationExpr.getFuncion().accept(this, param);
+		for(Expression exp: invocationExpr.getArguments())
+			exp.accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(InvocationStat invocationStat, Object param) {
-		// TODO Auto-generated method stub
+		invocationStat.getFuncion().accept(this, param);
+		for(Expression exp: invocationStat.getArguments())
+			exp.accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Logical logical, Object param) {
-		// TODO Auto-generated method stub
+		logical.getExp1().accept(this, param);
+		logical.getExp2().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Program program, Object param) {
-		// TODO Auto-generated method stub
+		for(Definition d: program.getDefinitions())
+			d.accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Read read, Object param) {
-		// TODO Auto-generated method stub
+		read.getExpression().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(RecordField recordField, Object param) {
-		// TODO Auto-generated method stub
+		recordField.getType().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(RecordType recordType, Object param) {
-		// TODO Auto-generated method stub
+		for (RecordField c : recordType.getFields()) {
+			c.accept(this, param);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(Return return1, Object param) {
-		// TODO Auto-generated method stub
+		return1.getExpression().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(UnaryMinus unaryMinus, Object param) {
-		// TODO Auto-generated method stub
+		unaryMinus.getType().accept(this, param);
+		unaryMinus.getOperand().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(UnaryNot unaryNot, Object param) {
-		// TODO Auto-generated method stub
+		unaryNot.getOperand().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
-		// TODO Auto-generated method stub
+		varDefinition.getType().accept(this,param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Variable variable, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(WhileSetatement whileSetatement, Object param) {
-		// TODO Auto-generated method stub
+		whileSetatement.getCondition().accept(this, param);
+		for (Statement c : whileSetatement.getStatements()) 
+			c.accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(Write write, Object param) {
-		// TODO Auto-generated method stub
+		write.getExpression().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(DoubleType doubleType, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(ErrorType errorType, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(IntType intType, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(VoidType voidType, Object param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

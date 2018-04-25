@@ -2,7 +2,13 @@ package visitor;
 
 
 
+
+
 import ast.Arithmetic;
+
+
+
+
 import ast.Assignment;
 import ast.Cast;
 import ast.CharLiteral;
@@ -15,30 +21,23 @@ import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
 import ast.InvocationExpr;
-import ast.InvocationStat;
 import ast.Logical;
 import ast.Program;
-import ast.Read;
 import ast.RealLiteral;
-import ast.RecordField;
 import ast.Return;
 import ast.Statement;
 import ast.UnaryMinus;
 import ast.UnaryNot;
-import ast.VarDefinition;
 import ast.Variable;
 import ast.WhileSetatement;
-import ast.Write;
 import ast.type.ArrayType;
 import ast.type.CharType;
 import ast.type.DoubleType;
 import ast.type.ErrorType;
 import ast.type.FunctionType;
 import ast.type.IntType;
-import ast.type.RecordType;
-import ast.type.VoidType;
 
-public class TypeCheckingVisitor implements Visitor{
+public class TypeCheckingVisitor extends AbstractVisitor{
 	
 	
 
@@ -67,10 +66,11 @@ public class TypeCheckingVisitor implements Visitor{
 			new ErrorType(assignment, msg);
 		}
 		
-		if(assignment.getLeft().getType()!=null && assignment.getRight().getType()!=null) {
+		if(assignment.getLeft().getType()!=null && assignment.getRight().getType()!=null) 
 			assignment.getLeft().setType(assignment.getRight().getType().promotesTo(assignment.getLeft().getType()));
-		}else if(assignment.getLeft().getType() == null)
-			assignment.getLeft().setType( new ErrorType(assignment, "El tipo de asignación no coincide."));
+		
+		if(assignment.getLeft().getType() == null)
+			assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignación no coincide."));
 		
 		
 		return null;
@@ -89,11 +89,6 @@ public class TypeCheckingVisitor implements Visitor{
 	public Object visit(CharLiteral charLiteral, Object param) {
 		charLiteral.setType(CharType.CharTypeInstance(charLiteral.getLine(), charLiteral.getColum()));
 		charLiteral.setLValue(false);
-		return null;
-	}
-
-	@Override
-	public Object visit(CharType charType, Object param) {
 		return null;
 	}
 
@@ -119,7 +114,7 @@ public class TypeCheckingVisitor implements Visitor{
 
 	@Override
 	public Object visit(FunctionType functionType, Object param) {
-		functionType.getType().accept(this, param);
+		functionType.getReturnType().accept(this, param);
 		for(Statement statement : functionType.getParameters())
 			statement.accept(this, param);
 		return null;
@@ -129,15 +124,10 @@ public class TypeCheckingVisitor implements Visitor{
 	public Object visit(FunDefinition funDefinition, Object param) {
 		funDefinition.getType().accept(this, param);
 		for (Statement statements : funDefinition.getStatements())
-			statements.accept(this, null);
+			statements.accept(this, funDefinition.getType());
 		return null;
 	}
 
-	@Override
-	public Object visit(IfStatement ifStatement, Object param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Object visit(Indexin indexin, Object param) {
@@ -161,17 +151,14 @@ public class TypeCheckingVisitor implements Visitor{
 		invocationExpr.getFuncion().accept(this, param);
 		for ( Expression ex : invocationExpr.getArguments())
 			ex.accept(this, param);
-		invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
+		if(!invocationExpr.getArguments().isEmpty()) 
+			invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
+		
 		if(invocationExpr.getType() == null)
 			invocationExpr.setType(new ErrorType(invocationExpr, "No se puede invocar a esta exprsion"));
 		return null;
 	}
 
-	@Override
-	public Object visit(InvocationStat invocationStat, Object param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Object visit(Logical logical, Object param) {
@@ -190,13 +177,6 @@ public class TypeCheckingVisitor implements Visitor{
 		return null;
 	}
 
-	@Override
-	public Object visit(Read read, Object param) {
-		read.getExpression().accept(this, param);
-		if(!read.getExpression().getLValue())
-			new ErrorType(read, "No puede ir a la izquierda");
-		return null;
-	}
 
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
@@ -204,23 +184,6 @@ public class TypeCheckingVisitor implements Visitor{
 		return null;
 	}
 
-	@Override
-	public Object visit(RecordField recordField, Object param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(RecordType recordType, Object param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(Return return1, Object param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Object visit(UnaryMinus unaryMinus, Object param) {
@@ -241,12 +204,6 @@ public class TypeCheckingVisitor implements Visitor{
 		return null;
 	}
 
-	@Override
-	public Object visit(VarDefinition varDefinition, Object param) {
-		if(varDefinition.getType() !=null)
-			varDefinition.getType().accept(this, param);
-		return null;
-	}
 
 	@Override
 	public Object visit(Variable variable, Object param) {
@@ -260,36 +217,42 @@ public class TypeCheckingVisitor implements Visitor{
 	public Object visit(WhileSetatement whileSetatement, Object param) {
 		whileSetatement.getCondition().accept(this, param);
 		if(whileSetatement.getCondition().getType()==null || !whileSetatement.getCondition().getType().isLogical() )
-			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condición lógica"));
+			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condición lógica en el while"));
 		for(Statement stm : whileSetatement.getStatements())
 			stm.accept(this, param);
 		return null;
 	}
-
+	
 	@Override
-	public Object visit(Write write, Object param) {
-		write.getExpression().accept(this, param);
+	public Object visit(IfStatement ifStatement, Object param) {
+		ifStatement.getCondition().accept(this, param);
+		if(ifStatement.getCondition().getType()==null || !ifStatement.getCondition().getType().isLogical() )
+			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condición lógica en el if"));
+		for(Statement statement: ifStatement.getIfBody())
+			statement.accept(this, param);
+		if(ifStatement.getElseBody()!= null) {
+		for(Statement statement: ifStatement.getElseBody())
+			statement.accept(this, param);
+		}
 		return null;
 	}
-
+	
 	@Override
-	public Object visit(DoubleType doubleType, Object param) {
+	public Object visit(Return return1, Object param) {
+		return1.getExpression().accept(this, param);
+		
+		if (return1.getExpression().getType()!= null) {
+			FunctionType funcionType = (FunctionType) param;
+			return1.getExpression().getType().equals(funcionType.getReturnType());
+
+			if (!return1.getExpression().getType().equals(funcionType.getReturnType())) {
+				new ErrorType(return1,
+						"El tipo de la funcion no es compatible con el tipo de retorno.");
+			}
+		}
+
 		return null;
 	}
-
-	@Override
-	public Object visit(ErrorType errorType, Object param) {
-		return null;
-	}
-
-	@Override
-	public Object visit(IntType intType, Object param) {
-		return null;
-	}
-
-	@Override
-	public Object visit(VoidType voidType, Object param) {
-		return null;
-	}
+	
 
 }

@@ -20,4 +20,12 @@ public class Return extends StatementAbstract implements Statement {
 		return v.visit(this, param);
 	}
 
+	public Expression getExpression() {
+		return expression;
+	}
+
+	public void setExpression(Expression expression) {
+		this.expression = expression;
+	}
+
 }

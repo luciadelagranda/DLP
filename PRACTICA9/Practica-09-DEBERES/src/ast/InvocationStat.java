@@ -24,6 +24,23 @@ public class InvocationStat extends StatementAbstract implements Statement {
 		return v.visit(this, param);
 	}
 
+	public List<Expression> getArguments() {
+		return arguments;
+	}
+
+	public void setArguments(List<Expression> arguments) {
+		this.arguments = arguments;
+	}
+
+	public Variable getFuncion() {
+		return funcion;
+	}
+
+	public void setFuncion(Variable funcion) {
+		this.funcion = funcion;
+	}
+	
+
 	
 
 }

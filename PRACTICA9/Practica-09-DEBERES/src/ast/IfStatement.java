@@ -61,4 +61,28 @@ public class IfStatement extends StatementAbstract implements Statement{
 		return v.visit(this, param);
 	}
 
+	public Expression getCondition() {
+		return condition;
+	}
+
+	public void setCondition(Expression condition) {
+		this.condition = condition;
+	}
+
+	public List<Statement> getIfBody() {
+		return ifBody;
+	}
+
+	public void setIfBody(List<Statement> ifBody) {
+		this.ifBody = ifBody;
+	}
+
+	public List<Statement> getElseBody() {
+		return elseBody;
+	}
+
+	public void setElseBody(List<Statement> elseBody) {
+		this.elseBody = elseBody;
+	}
+
 }

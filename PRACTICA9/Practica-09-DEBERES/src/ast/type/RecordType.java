@@ -30,4 +30,12 @@ public class RecordType extends TypeAbstract implements Type{
 				return rf.getType();
 		return null;
 	}
+
+	public List<RecordField> getFields() {
+		return fields;
+	}
+
+	public void setFields(List<RecordField> fields) {
+		this.fields = fields;
+	}
 }

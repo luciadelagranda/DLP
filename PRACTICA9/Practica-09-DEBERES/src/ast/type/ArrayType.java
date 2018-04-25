@@ -32,4 +32,13 @@ public class ArrayType extends TypeAbstract  implements Type{
 			return null;
 		}
 	}
+
+	public Type getOf() {
+		return of;
+	}
+
+	public void setOf(Type of) {
+		this.of = of;
+	}
+	
 }
