@@ -1,2 +1,7 @@
-/visitor/
+/Main.class
 /ast/
+/errorhandler/
+/parser/
+/scanner/
+/symbolTable/
+/visitor/

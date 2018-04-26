@@ -27,12 +27,12 @@ public class SymbolTable {
 	}
 	
 	public boolean insert(Definition definition) {
-		String name = definition.getName();
-		((VarDefinition) definition).setScope(scope);
-		if(findInCurrentScope(name)!=null)
-			return false;
-		table.get(scope).put(name , definition);
+		if(definition!=null && findInCurrentScope(definition.getName())== null) {
+			table.get(scope).put(definition.getName() , definition);
+			definition.setScope(this.scope);
 		return true;
+		}
+		return false;
 	}
 	
 	public Definition find(String id) {

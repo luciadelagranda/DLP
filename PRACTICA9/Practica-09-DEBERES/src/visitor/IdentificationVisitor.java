@@ -27,10 +27,13 @@ public class IdentificationVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
+		if(!simbolTable.insert(funDefinition))
+			return new ErrorType(funDefinition, "La función ya está definida");
 		simbolTable.set();
 		funDefinition.getType().accept(this, param);
 		for(Statement statement : funDefinition.getStatements())
 			statement.accept(this, param);
+		simbolTable.reset();
 		return null;
 	}
 
