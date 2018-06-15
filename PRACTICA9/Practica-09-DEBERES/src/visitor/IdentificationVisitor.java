@@ -5,9 +5,6 @@ import ast.Definition;
 
 import ast.FunDefinition;
 
-
-import ast.Read;
-
 import ast.Statement;
 
 import ast.VarDefinition;
@@ -28,7 +25,7 @@ public class IdentificationVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
 		if(!simbolTable.insert(funDefinition))
-			return new ErrorType(funDefinition, "La función ya está definida");
+			return new ErrorType(funDefinition, "La funciï¿½n ya estï¿½ definida");
 		simbolTable.set();
 		funDefinition.getType().accept(this, param);
 		for(Statement statement : funDefinition.getStatements())
@@ -37,19 +34,11 @@ public class IdentificationVisitor extends AbstractVisitor {
 		return null;
 	}
 
-	@Override
-	public Object visit(Read read, Object param) {
-		read.getExpression().accept(this, param);
-		if(!read.getExpression().getLValue())
-			new ErrorType(read, "No puedes tener ese tipo de expresión a la derecha de un input");
-		return null;
-	}
-
 
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
 		if(!simbolTable.insert(varDefinition))
-			return new ErrorType(varDefinition, "La variable está duplicada");
+			return new ErrorType(varDefinition, "La variable estÃ¡ duplicada");
 		varDefinition.getType().accept(this, param);
 		return null;
 	}
@@ -61,7 +50,6 @@ public class IdentificationVisitor extends AbstractVisitor {
 			new ErrorType(variable, "La variable no ha sido definida");
 		else 
 			variable.setVarDefinition(def);
-		variable.setLValue(true);
 		return null;
 	}
 

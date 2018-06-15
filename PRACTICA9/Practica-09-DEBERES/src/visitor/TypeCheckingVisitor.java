@@ -9,11 +9,11 @@ import ast.Arithmetic;
 
 
 
+
 import ast.Assignment;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
-import ast.Definition;
 import ast.Expression;
 import ast.FieldAccess;
 import ast.FunDefinition;
@@ -22,7 +22,6 @@ import ast.Indexin;
 import ast.IntLiteral;
 import ast.InvocationExpr;
 import ast.Logical;
-import ast.Program;
 import ast.RealLiteral;
 import ast.Return;
 import ast.Statement;
@@ -30,7 +29,6 @@ import ast.UnaryMinus;
 import ast.UnaryNot;
 import ast.Variable;
 import ast.WhileSetatement;
-import ast.type.ArrayType;
 import ast.type.CharType;
 import ast.type.DoubleType;
 import ast.type.ErrorType;
@@ -45,15 +43,13 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	public Object visit(Arithmetic arithmetic, Object param) {
 		arithmetic.getLeft().accept(this,param);
 		arithmetic.getRight().accept(this, param);
+		
 		arithmetic.setType(arithmetic.getLeft().getType().arithmetic(arithmetic.getRight().getType()));
+		
 		if(arithmetic.getType() == null)
-			arithmetic.setType(new ErrorType(arithmetic, "La operación arigmética no es correcta"));
+			arithmetic.setType(new ErrorType(arithmetic, "La operaciï¿½n arigmï¿½tica no es correcta"));
+		
 		arithmetic.setLValue(false);
-		return null;
-	}
-
-	@Override
-	public Object visit(ArrayType arrayType, Object param) {
 		return null;
 	}
 
@@ -61,27 +57,31 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	public Object visit(Assignment assignment, Object param) {
 		assignment.getLeft().accept(this,param);
 		assignment.getRight().accept(this, param);
+		
 		if(!assignment.getLeft().getLValue()) {
-			String msg = "La expresión de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
+			String msg = "La expresiÃ³n de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
 			new ErrorType(assignment, msg);
 		}
 		
-		if(assignment.getLeft().getType()!=null && assignment.getRight().getType()!=null) 
+		if(assignment.getLeft().getType()!=null && assignment.getRight().getType()!=null) {
 			assignment.getLeft().setType(assignment.getRight().getType().promotesTo(assignment.getLeft().getType()));
 		
-		if(assignment.getLeft().getType() == null)
-			assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignación no coincide."));
-		
-		
+			if(assignment.getLeft().getType() == null)
+				assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignaciÃ³n no coincide."));
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(Cast cast, Object param) {
 		cast.getExp().accept(this, param);
+		cast.getCastType().accept(this, param);
+		
 		cast.setType(cast.getExp().getType().canBeCast(cast.getCastType()));
 		if(cast.getType() == null)
 			cast.setType(new ErrorType(cast, "No se puede castear a ese tipo"));
+		
+		cast.setLValue(false);
 		return null;
 	}
 
@@ -96,19 +96,25 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	public Object visit(Comparison comparison, Object param) {
 		comparison.getExp1().accept(this, param);
 		comparison.getExp2().accept(this, param);
+		
 		comparison.setType(comparison.getExp1().getType().comparison(comparison.getExp2().getType()));
 		if(comparison.getType()== null)
 			comparison.setType(new ErrorType(comparison, "No se puede comparar ese tipo"));
+		comparison.setLValue(false);
 		return null;
 	}
 
 	@Override
 	public Object visit(FieldAccess fieldAccess, Object param) {
 		fieldAccess.getExp1().accept(this, param);
-		fieldAccess.setType(fieldAccess.getExp1().getType().dot(fieldAccess.getName()));
-		if(fieldAccess.getType()== null)
-			fieldAccess.setType(new ErrorType(fieldAccess, "No se puede acceder a este campo"));
-		fieldAccess.setLValue(true);
+		if(fieldAccess.getType()!= null) {
+			fieldAccess.setType(fieldAccess.getExp1().getType().dot(fieldAccess.getName()));
+			if(fieldAccess.getType()== null)
+				fieldAccess.setType(new ErrorType(fieldAccess, "No se puede acceder a este campo"));
+		}
+		
+		if(fieldAccess.getExp1().getLValue())
+			fieldAccess.setLValue(true);
 		return null;
 	}
 
@@ -123,8 +129,9 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
 		funDefinition.getType().accept(this, param);
-		for (Statement statements : funDefinition.getStatements())
-			statements.accept(this, funDefinition.getType());
+		if(funDefinition.getStatements()!=null)
+			for (Statement statements : funDefinition.getStatements())
+				statements.accept(this, funDefinition.getType());
 		return null;
 	}
 
@@ -133,9 +140,11 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	public Object visit(Indexin indexin, Object param) {
 		indexin.getExp1().accept(this, param);
 		indexin.getExp2().accept(this, param);
+		
 		indexin.setType(indexin.getExp1().getType().squareBPacket(indexin.getExp2().getType()));
 		if(indexin.getType() == null)
-			indexin.setType(new ErrorType(indexin, "Los tipos que intenta indexar no son compatibles"));
+			indexin.setType(new ErrorType(indexin, "No se puede acceder a array."));
+		
 		indexin.setLValue(true);
 		return null;
 	}
@@ -143,6 +152,8 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(IntLiteral intLiteral, Object param) {
 		intLiteral.setType(IntType.IntTypeInstance(intLiteral.getLine(), intLiteral.getColum()));
+		intLiteral.setLValue(false);
+
 		return null;
 	}
 
@@ -151,11 +162,14 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		invocationExpr.getFuncion().accept(this, param);
 		for ( Expression ex : invocationExpr.getArguments())
 			ex.accept(this, param);
-		if(!invocationExpr.getArguments().isEmpty()) 
+		if(!invocationExpr.getArguments().isEmpty()) {
 			invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
 		
 		if(invocationExpr.getType() == null)
 			invocationExpr.setType(new ErrorType(invocationExpr, "No se puede invocar a esta exprsion"));
+		}
+		
+		invocationExpr.setLValue(false);
 		return null;
 	}
 
@@ -166,14 +180,8 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		logical.getExp2().accept(this, param);
 		logical.setType(logical.getExp1().getType().logical(logical.getExp2().getType()));
 		if(logical.getType()== null)
-			logical.setType(new ErrorType(logical, "No se puede hacer una operación lógica de estos tipos"));
-		return null;
-	}
-
-	@Override
-	public Object visit(Program program, Object param) {
-		for (Definition definition : program.getDefinitions())
-			definition.accept(this, null);
+			logical.setType(new ErrorType(logical, "No se puede hacer una operaciï¿½n lï¿½gica de estos tipos"));
+		logical.setLValue(false);
 		return null;
 	}
 
@@ -181,6 +189,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
 		realLiteral.setType(DoubleType.DoubleTypeInstance(realLiteral.getLine(), realLiteral.getColum()));
+		realLiteral.setLValue(false);
 		return null;
 	}
 
@@ -190,8 +199,10 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		unaryMinus.getOperand().accept(this, param);
 		unaryMinus.setType(unaryMinus.getOperand().getType().arithmetic());
 		if(unaryMinus.getType() == null) {
-			unaryMinus.setType(new ErrorType(unaryMinus, "no se puede negativizar este tipo"));
+			unaryMinus.setType(new ErrorType(unaryMinus, "No se puede negativizar este tipo"));
 		}
+		
+		unaryMinus.setLValue(false);
 		return null;
 	}
 
@@ -200,7 +211,8 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		unaryNot.getOperand().accept(this, param);
 		unaryNot.setType(unaryNot.getOperand().getType().logical());
 		if(unaryNot.getType()== null)
-			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negación este tipo"));
+			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negaciï¿½n este tipo"));
+		unaryNot.setLValue(false);
 		return null;
 	}
 
@@ -216,8 +228,9 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(WhileSetatement whileSetatement, Object param) {
 		whileSetatement.getCondition().accept(this, param);
+		
 		if(whileSetatement.getCondition().getType()==null || !whileSetatement.getCondition().getType().isLogical() )
-			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condición lógica en el while"));
+			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condiciï¿½n lï¿½gica en el while"));
 		for(Statement stm : whileSetatement.getStatements())
 			stm.accept(this, param);
 		return null;
@@ -226,10 +239,13 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(IfStatement ifStatement, Object param) {
 		ifStatement.getCondition().accept(this, param);
+		
 		if(ifStatement.getCondition().getType()==null || !ifStatement.getCondition().getType().isLogical() )
-			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condición lógica en el if"));
+			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condiciï¿½n lï¿½gica en el if"));
+		
 		for(Statement statement: ifStatement.getIfBody())
 			statement.accept(this, param);
+		
 		if(ifStatement.getElseBody()!= null) {
 		for(Statement statement: ifStatement.getElseBody())
 			statement.accept(this, param);

@@ -192,7 +192,6 @@ public class AbstractVisitor implements Visitor{
 
 	@Override
 	public Object visit(UnaryMinus unaryMinus, Object param) {
-		unaryMinus.getType().accept(this, param);
 		unaryMinus.getOperand().accept(this, param);
 		return null;
 	}

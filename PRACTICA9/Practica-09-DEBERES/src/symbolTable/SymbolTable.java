@@ -2,8 +2,8 @@ package symbolTable;
 
 import java.util.*;
 
+
 import ast.Definition;
-import ast.VarDefinition;
 
 public class SymbolTable {
 	
@@ -30,7 +30,7 @@ public class SymbolTable {
 		if(definition!=null && findInCurrentScope(definition.getName())== null) {
 			table.get(scope).put(definition.getName() , definition);
 			definition.setScope(this.scope);
-		return true;
+			return true;
 		}
 		return false;
 	}

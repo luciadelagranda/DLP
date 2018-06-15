@@ -10,6 +10,7 @@ public class FunDefinition extends ASTNodeAbstract implements Definition {
 	private String name;
 	private Type type;
 	private List<Statement> statements;
+	private int scope;
 
 	public FunDefinition(int line, int column, String string, Type type,
 			List<Statement> statements) {
@@ -49,6 +50,19 @@ public class FunDefinition extends ASTNodeAbstract implements Definition {
 
 	public void setStatements(List<Statement> statements) {
 		this.statements = statements;
+	}
+
+
+	@Override
+	public int getScope() {
+		return scope;
+	}
+
+
+	@Override
+	public void setScope(int scope) {
+		this.scope = scope;
+		
 	}
 	
 	
