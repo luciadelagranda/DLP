@@ -1,6 +1,7 @@
 package visitor;
 
 import ast.Arithmetic;
+
 import ast.Assignment;
 import ast.Cast;
 import ast.CharLiteral;
@@ -11,7 +12,6 @@ import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
 import ast.InvocationExpr;
-import ast.InvocationStat;
 import ast.Logical;
 import ast.Program;
 import ast.Read;
@@ -62,8 +62,6 @@ public interface Visitor {
 	Object visit(IntLiteral intLiteral, Object param);
 
 	Object visit(InvocationExpr invocationExpr, Object param);
-
-	Object visit(InvocationStat invocationStat, Object param);
 
 	Object visit(Logical logical, Object param);
 

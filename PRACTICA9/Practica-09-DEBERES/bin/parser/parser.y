@@ -111,15 +111,12 @@ sentencia: RETURN expression ';'			{$$ = new Return(scanner.getLine(), scanner.g
          | input							{$$ = $1;}
          | if								{$$ = $1;}
          | ifSimple							{$$ = $1;}
-         | invocationStat ';'				{$$ = $1;}
+         | invocation ';					{$$ = $1;}
          | assignment						{$$ = $1;}
          ;
          
-invocationStat : ID '('paramsInvocation')'   {$$ = new InvocationStat(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
+invocation : ID '('paramsInvocation')'   {$$ = new InvocationExpr(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
 			   
-
-invocationExpr : ID '('paramsInvocation')'   {$$ = new InvocationExpr(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
-
 paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Expression>)$$).addAll((List<Expression>)$1);}
 				| 							 {$$ = new ArrayList<Expression>();}
 				;
@@ -234,7 +231,7 @@ expression : ID								 {$$ = new Variable(scanner.getLine(), scanner.getColumn(
          | INT_CONSTANT						 {$$ = new IntLiteral(scanner.getLine(), scanner.getColumn(),(int)$1);}
          | CHAR_CONSTANT 					 {$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(),(char)$1);}
          | cast								 {$$ = $1;}
-         | invocationExpr					 {$$ = $1;}
+         | invocation						 {$$ = $1;}
          ;      
 
 cast :  '(' tipo ')' expression				{$$ = new Cast(scanner.getLine(), scanner.getColumn(), (Type)$2,(Expression)$4);}

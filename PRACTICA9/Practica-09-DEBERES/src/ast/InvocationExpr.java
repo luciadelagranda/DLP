@@ -4,7 +4,7 @@ import java.util.List;
 
 import visitor.Visitor;
 
-public class InvocationExpr extends ExpressionAbstract implements Expression {
+public class InvocationExpr extends ExpressionAbstract implements Statement {
 	private List<Expression> arguments;
 	private Variable funcion;
 

@@ -6,10 +6,6 @@ package visitor;
 
 import ast.Arithmetic;
 
-
-
-
-
 import ast.Assignment;
 import ast.Cast;
 import ast.CharLiteral;
@@ -22,6 +18,7 @@ import ast.Indexin;
 import ast.IntLiteral;
 import ast.InvocationExpr;
 import ast.Logical;
+import ast.Read;
 import ast.RealLiteral;
 import ast.Return;
 import ast.Statement;
@@ -47,7 +44,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		arithmetic.setType(arithmetic.getLeft().getType().arithmetic(arithmetic.getRight().getType()));
 		
 		if(arithmetic.getType() == null)
-			arithmetic.setType(new ErrorType(arithmetic, "La operaciï¿½n arigmï¿½tica no es correcta"));
+			arithmetic.setType(new ErrorType(arithmetic, "La operación arigmética no es correcta"));
 		
 		arithmetic.setLValue(false);
 		return null;
@@ -59,7 +56,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		assignment.getRight().accept(this, param);
 		
 		if(!assignment.getLeft().getLValue()) {
-			String msg = "La expresiÃ³n de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
+			String msg = "La expresión de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
 			new ErrorType(assignment, msg);
 		}
 		
@@ -67,7 +64,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 			assignment.getLeft().setType(assignment.getRight().getType().promotesTo(assignment.getLeft().getType()));
 		
 			if(assignment.getLeft().getType() == null)
-				assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignaciÃ³n no coincide."));
+				assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignación no coincide."));
 		}
 		return null;
 	}
@@ -107,7 +104,8 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(FieldAccess fieldAccess, Object param) {
 		fieldAccess.getExp1().accept(this, param);
-		if(fieldAccess.getType()!= null) {
+		
+		if(fieldAccess.getExp1().getType()!= null) {
 			fieldAccess.setType(fieldAccess.getExp1().getType().dot(fieldAccess.getName()));
 			if(fieldAccess.getType()== null)
 				fieldAccess.setType(new ErrorType(fieldAccess, "No se puede acceder a este campo"));
@@ -115,6 +113,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		
 		if(fieldAccess.getExp1().getLValue())
 			fieldAccess.setLValue(true);
+		
 		return null;
 	}
 
@@ -160,19 +159,19 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	@Override
 	public Object visit(InvocationExpr invocationExpr, Object param) {
 		invocationExpr.getFuncion().accept(this, param);
+		
+		if(invocationExpr.getArguments() != null)
 		for ( Expression ex : invocationExpr.getArguments())
 			ex.accept(this, param);
-		if(!invocationExpr.getArguments().isEmpty()) {
-			invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
+		
+		invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
 		
 		if(invocationExpr.getType() == null)
 			invocationExpr.setType(new ErrorType(invocationExpr, "No se puede invocar a esta exprsion"));
-		}
 		
 		invocationExpr.setLValue(false);
 		return null;
 	}
-
 
 	@Override
 	public Object visit(Logical logical, Object param) {
@@ -180,7 +179,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		logical.getExp2().accept(this, param);
 		logical.setType(logical.getExp1().getType().logical(logical.getExp2().getType()));
 		if(logical.getType()== null)
-			logical.setType(new ErrorType(logical, "No se puede hacer una operaciï¿½n lï¿½gica de estos tipos"));
+			logical.setType(new ErrorType(logical, "No se puede hacer una operación lógica de estos tipos"));
 		logical.setLValue(false);
 		return null;
 	}
@@ -211,7 +210,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		unaryNot.getOperand().accept(this, param);
 		unaryNot.setType(unaryNot.getOperand().getType().logical());
 		if(unaryNot.getType()== null)
-			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negaciï¿½n este tipo"));
+			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negación de este tipo"));
 		unaryNot.setLValue(false);
 		return null;
 	}
@@ -230,7 +229,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		whileSetatement.getCondition().accept(this, param);
 		
 		if(whileSetatement.getCondition().getType()==null || !whileSetatement.getCondition().getType().isLogical() )
-			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condiciï¿½n lï¿½gica en el while"));
+			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condiciónn lógica en el while"));
 		for(Statement stm : whileSetatement.getStatements())
 			stm.accept(this, param);
 		return null;
@@ -241,7 +240,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		ifStatement.getCondition().accept(this, param);
 		
 		if(ifStatement.getCondition().getType()==null || !ifStatement.getCondition().getType().isLogical() )
-			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condiciï¿½n lï¿½gica en el if"));
+			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condición lógica en el if"));
 		
 		for(Statement statement: ifStatement.getIfBody())
 			statement.accept(this, param);
@@ -270,5 +269,15 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		return null;
 	}
 	
-
+	@Override
+	public Object visit(Read read, Object param) {
+		read.getExpression().accept(this, param);
+		if(!read.getExpression().getLValue()) 
+			new ErrorType(read, "No puedes importar ese tipo de expression");
+		
+		return null;
+	
+	}
+	
 }
+	

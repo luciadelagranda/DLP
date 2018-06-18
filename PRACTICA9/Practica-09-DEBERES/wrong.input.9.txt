@@ -1,4 +1,3 @@
-
 i:int;
 
 def f(a:int):int {
@@ -12,6 +11,7 @@ def g(b:int, b:double):void {	# Error 3
 
 def g():void {					# Error 5
 }
+
 
 def main():void {
   f();       					# Error 6

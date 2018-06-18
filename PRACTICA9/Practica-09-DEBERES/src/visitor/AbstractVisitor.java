@@ -13,7 +13,6 @@ import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
 import ast.InvocationExpr;
-import ast.InvocationStat;
 import ast.Logical;
 import ast.Program;
 import ast.Read;
@@ -85,7 +84,6 @@ public class AbstractVisitor implements Visitor{
 	@Override
 	public Object visit(FieldAccess fieldAccess, Object param) {
 		fieldAccess.getExp1().accept(this, param);
-		fieldAccess.setLValue(true);
 		return null;
 	}
 
@@ -138,14 +136,6 @@ public class AbstractVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(InvocationStat invocationStat, Object param) {
-		invocationStat.getFuncion().accept(this, param);
-		for(Expression exp: invocationStat.getArguments())
-			exp.accept(this, param);
-		return null;
-	}
-
-	@Override
 	public Object visit(Logical logical, Object param) {
 		logical.getExp1().accept(this, param);
 		logical.getExp2().accept(this, param);
@@ -162,6 +152,7 @@ public class AbstractVisitor implements Visitor{
 	@Override
 	public Object visit(Read read, Object param) {
 		read.getExpression().accept(this, param);
+		
 		return null;
 	}
 
