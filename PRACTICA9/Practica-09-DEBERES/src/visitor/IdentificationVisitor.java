@@ -25,7 +25,7 @@ public class IdentificationVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
 		if(!simbolTable.insert(funDefinition))
-			return new ErrorType(funDefinition, "La funciÛn ya est· definida");
+			return new ErrorType(funDefinition, "La funci√≥n ya est√° definida");
 		simbolTable.set();
 		funDefinition.getType().accept(this, param);
 		for(Statement statement : funDefinition.getStatements())
@@ -38,7 +38,7 @@ public class IdentificationVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
 		if(!simbolTable.insert(varDefinition))
-			return new ErrorType(varDefinition, "La variable est· duplicada");
+			return new ErrorType(varDefinition, "La variable est√° duplicada");
 		varDefinition.getType().accept(this, param);
 		return null;
 	}

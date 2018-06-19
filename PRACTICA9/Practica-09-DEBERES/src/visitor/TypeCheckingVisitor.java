@@ -16,7 +16,7 @@ import ast.FunDefinition;
 import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
-import ast.InvocationExpr;
+import ast.Invocation;
 import ast.Logical;
 import ast.Read;
 import ast.RealLiteral;
@@ -44,7 +44,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		arithmetic.setType(arithmetic.getLeft().getType().arithmetic(arithmetic.getRight().getType()));
 		
 		if(arithmetic.getType() == null)
-			arithmetic.setType(new ErrorType(arithmetic, "La operaci髇 arigm閠ica no es correcta"));
+			arithmetic.setType(new ErrorType(arithmetic, "La operaci锟絥 arigm茅tica no es correcta"));
 		
 		arithmetic.setLValue(false);
 		return null;
@@ -56,7 +56,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		assignment.getRight().accept(this, param);
 		
 		if(!assignment.getLeft().getLValue()) {
-			String msg = "La expresi髇 de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
+			String msg = "La expresi贸n de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
 			new ErrorType(assignment, msg);
 		}
 		
@@ -64,7 +64,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 			assignment.getLeft().setType(assignment.getRight().getType().promotesTo(assignment.getLeft().getType()));
 		
 			if(assignment.getLeft().getType() == null)
-				assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignaci髇 no coincide."));
+				assignment.getLeft().setType( new ErrorType(assignment, "El tipo de la asignaci贸n no coincide."));
 		}
 		return null;
 	}
@@ -157,19 +157,19 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	}
 
 	@Override
-	public Object visit(InvocationExpr invocationExpr, Object param) {
-		invocationExpr.getFuncion().accept(this, param);
+	public Object visit(Invocation invocation, Object param) {
+		invocation.getFuncion().accept(this, param);
 		
-		if(invocationExpr.getArguments() != null)
-		for ( Expression ex : invocationExpr.getArguments())
+		if(invocation.getArguments() != null)
+		for ( Expression ex : invocation.getArguments())
 			ex.accept(this, param);
 		
-		invocationExpr.setType(invocationExpr.getFuncion().getType().parenthesis(invocationExpr.getArguments()));
+		invocation.setType(invocation.getFuncion().getType().parenthesis(invocation.getArguments()));
 		
-		if(invocationExpr.getType() == null)
-			invocationExpr.setType(new ErrorType(invocationExpr, "No se puede invocar a esta exprsion"));
+		if(invocation.getType() == null)
+			invocation.setType(new ErrorType(invocation, "No se puede invocar a esta expresi贸n"));
 		
-		invocationExpr.setLValue(false);
+		invocation.setLValue(false);
 		return null;
 	}
 
@@ -179,7 +179,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		logical.getExp2().accept(this, param);
 		logical.setType(logical.getExp1().getType().logical(logical.getExp2().getType()));
 		if(logical.getType()== null)
-			logical.setType(new ErrorType(logical, "No se puede hacer una operaci髇 l骻ica de estos tipos"));
+			logical.setType(new ErrorType(logical, "No se puede hacer una operaci贸n l贸gica de estos tipos"));
 		logical.setLValue(false);
 		return null;
 	}
@@ -210,7 +210,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		unaryNot.getOperand().accept(this, param);
 		unaryNot.setType(unaryNot.getOperand().getType().logical());
 		if(unaryNot.getType()== null)
-			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negaci髇 de este tipo"));
+			unaryNot.setType(new ErrorType(unaryNot, "No se puede hacer una negaci贸n de este tipo"));
 		unaryNot.setLValue(false);
 		return null;
 	}
@@ -229,7 +229,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		whileSetatement.getCondition().accept(this, param);
 		
 		if(whileSetatement.getCondition().getType()==null || !whileSetatement.getCondition().getType().isLogical() )
-			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condici髇n l骻ica en el while"));
+			whileSetatement.getCondition().setType(new ErrorType(whileSetatement, "Se esperaba una condici贸n l贸gica en el while"));
 		for(Statement stm : whileSetatement.getStatements())
 			stm.accept(this, param);
 		return null;
@@ -240,7 +240,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		ifStatement.getCondition().accept(this, param);
 		
 		if(ifStatement.getCondition().getType()==null || !ifStatement.getCondition().getType().isLogical() )
-			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condici髇 l骻ica en el if"));
+			ifStatement.getCondition().setType(new ErrorType(ifStatement, "Se esperaba una condici贸n l贸gica en el if"));
 		
 		for(Statement statement: ifStatement.getIfBody())
 			statement.accept(this, param);

@@ -12,7 +12,7 @@ import ast.FunDefinition;
 import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
-import ast.InvocationExpr;
+import ast.Invocation;
 import ast.Logical;
 import ast.Program;
 import ast.Read;
@@ -128,9 +128,9 @@ public class AbstractVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(InvocationExpr invocationExpr, Object param) {
-		invocationExpr.getFuncion().accept(this, param);
-		for(Expression exp: invocationExpr.getArguments())
+	public Object visit(Invocation invocation, Object param) {
+		invocation.getFuncion().accept(this, param);
+		for(Expression exp: invocation.getArguments())
 			exp.accept(this, param);
 		return null;
 	}

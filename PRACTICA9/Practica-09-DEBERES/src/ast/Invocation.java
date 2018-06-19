@@ -4,11 +4,11 @@ import java.util.List;
 
 import visitor.Visitor;
 
-public class InvocationExpr extends ExpressionAbstract implements Statement {
+public class Invocation extends ExpressionAbstract implements Statement {
 	private List<Expression> arguments;
 	private Variable funcion;
 
-	public InvocationExpr(int line, int column, Variable variable, List<Expression> arguments) {
+	public Invocation(int line, int column, Variable variable, List<Expression> arguments) {
 		super(line,column);
 		this.funcion = variable;
 		this.arguments = arguments;

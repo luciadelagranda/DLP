@@ -1,13 +1,12 @@
 
 %{
-// * Declaraciones de código Java
-// * Se sitúan al comienzo del archivo generado
-// * El package lo añade yacc si utilizamos la opción -Jpackage
+// * Declaraciones de cï¿½digo Java
+// * Se sitï¿½an al comienzo del archivo generado
+// * El package lo aï¿½ade yacc si utilizamos la opciï¿½n -Jpackage
 
 import ast.*;
 import ast.type.*;
 import scanner.Scanner;
-import java.io.Reader;
 import java.util.*;
 
 %}
@@ -74,7 +73,7 @@ import java.util.*;
 
 
 %%
-// * Gramática y acciones Yacc
+// * Gramï¿½tica y acciones Yacc
 
 programa : definiciones main				{$$ = (List<Definition>)$1; ((List<Definition>)$$).add((FunDefinition)$2);
 											 raiz = new Program(scanner.getLine(), scanner.getColumn(),(List<Definition>)$$);}
@@ -111,11 +110,11 @@ sentencia: RETURN expression ';'			{$$ = new Return(scanner.getLine(), scanner.g
          | input							{$$ = $1;}
          | if								{$$ = $1;}
          | ifSimple							{$$ = $1;}
-         | invocation ';					{$$ = $1;}
+         | invocation ';'					{$$ = $1;}
          | assignment						{$$ = $1;}
          ;
          
-invocation : ID '('paramsInvocation')'   {$$ = new InvocationExpr(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
+invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
 			   
 paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Expression>)$$).addAll((List<Expression>)$1);}
 				| 							 {$$ = new ArrayList<Expression>();}
@@ -249,21 +248,21 @@ input: INPUT expressiones ';'		{for(Expression exp : ((List<Expression>)$2))
            
 %%
 
-// * Código Java
-// * Se crea una clase "Parser", lo que aquí ubiquemos será:
+// * Cï¿½digo Java
+// * Se crea una clase "Parser", lo que aquï¿½ ubiquemos serï¿½:
 //	- Atributos, si son variables
-//	- Métodos, si son funciones
+//	- Mï¿½todos, si son funciones
 //   de la clase "Parser"
 
 // * Estamos obligados a implementar:
 //	int yylex()
 //	void yyerror(String)
 
-// * Referencia al analizador léxico
+// * Referencia al analizador lï¿½xico
 private Scanner scanner;
 private ASTNode raiz;
 
-// * Llamada al analizador léxico
+// * Llamada al analizador lï¿½xico
 private int yylex () {
     int token=0;
     try { 
@@ -275,12 +274,12 @@ private int yylex () {
     return token;
 }
 
-// * Manejo de Errores Sintácticos
+// * Manejo de Errores Sintï¿½cticos
 public void yyerror (String error) {
     System.err.println ("Syntactical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+error);
 }
 
-// * Constructor del Sintáctico
+// * Constructor del Sintï¿½ctico
 public Parser(Scanner scanner) {
 	this.scanner = scanner;
 }

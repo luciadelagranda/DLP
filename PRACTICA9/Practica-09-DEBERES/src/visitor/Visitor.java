@@ -11,7 +11,7 @@ import ast.FunDefinition;
 import ast.IfStatement;
 import ast.Indexin;
 import ast.IntLiteral;
-import ast.InvocationExpr;
+import ast.Invocation;
 import ast.Logical;
 import ast.Program;
 import ast.Read;
@@ -61,7 +61,7 @@ public interface Visitor {
 
 	Object visit(IntLiteral intLiteral, Object param);
 
-	Object visit(InvocationExpr invocationExpr, Object param);
+	Object visit(Invocation invocation, Object param);
 
 	Object visit(Logical logical, Object param);
 
