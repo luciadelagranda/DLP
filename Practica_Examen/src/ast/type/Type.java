@@ -29,4 +29,6 @@ public interface Type extends ASTNode{
 
 	Type parenthesis(List<Expression> arguments);
 	
+	int numberOfBytes();
+	
 }

@@ -41,4 +41,19 @@ public class ArrayType extends TypeAbstract  implements Type{
 		this.of = of;
 	}
 	
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	@Override
+	public int numberOfBytes() {
+		return this.getOf().numberOfBytes() * this.getSize();
+	}
+
+	
+	
 }

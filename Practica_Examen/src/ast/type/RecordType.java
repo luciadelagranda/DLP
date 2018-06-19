@@ -38,4 +38,12 @@ public class RecordType extends TypeAbstract implements Type{
 	public void setFields(List<RecordField> fields) {
 		this.fields = fields;
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		int sum = 0;
+		for (RecordField field : getFields())
+			sum += field.getType().numberOfBytes();
+		return sum;
+	}
 }

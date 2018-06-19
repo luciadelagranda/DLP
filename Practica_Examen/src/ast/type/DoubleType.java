@@ -38,9 +38,10 @@ public class DoubleType extends TypeAbstract implements Type {
 	public Type canBeCast(Type type) {
 		if (type instanceof IntType || type instanceof DoubleType || type instanceof CharType)
 			return this;
+		else if (type instanceof ErrorType)
+			return type;
 		return null;
 	}
-
 
 	@Override
 	public Type arithmetic() {
@@ -49,23 +50,26 @@ public class DoubleType extends TypeAbstract implements Type {
 
 	@Override
 	public Type comparison(Type expresion) {
-		if (expresion instanceof DoubleType) {
-			return this;
+		if (expresion instanceof DoubleType || expresion instanceof CharType || expresion instanceof IntType) {
+			return IntType.getInstancia();
 		} else if (expresion instanceof ErrorType) {
 			return expresion;
 		}
 
 		return null;
 	}
-	
+
 	@Override
 	public Type promotesTo(Type type) {
-		if (type instanceof DoubleType) {
+		if (type instanceof DoubleType)
 			return this;
-		} else if (type instanceof ErrorType) {
+		else if (type instanceof ErrorType)
 			return type;
-		} else {
-			return null;
-		}
+		return null;
+	}
+
+	@Override
+	public int numberOfBytes() {
+		return 4;
 	}
 }

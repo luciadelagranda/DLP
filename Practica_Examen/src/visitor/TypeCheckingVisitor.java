@@ -44,7 +44,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		arithmetic.setType(arithmetic.getLeft().getType().arithmetic(arithmetic.getRight().getType()));
 		
 		if(arithmetic.getType() == null)
-			arithmetic.setType(new ErrorType(arithmetic, "La operaci�n arigmética no es correcta"));
+			arithmetic.setType(new ErrorType(arithmetic, "La operación arigmética no es correcta"));
 		
 		arithmetic.setLValue(false);
 		return null;
@@ -56,7 +56,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		assignment.getRight().accept(this, param);
 		
 		if(!assignment.getLeft().getLValue()) {
-			String msg = "La expresión de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta";
+			String msg = "La expresión de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta. ";
 			new ErrorType(assignment, msg);
 		}
 		

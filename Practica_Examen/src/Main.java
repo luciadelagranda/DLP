@@ -12,39 +12,38 @@ import errorhandler.EH;
 
 public class Main {
 	public static void main(String args[]) throws IOException {
-		if (args.length<1) {
-	        System.err.println("Pass me the name of the input file.");
-	        return;
-	    }
-	        
-		FileReader fr=null;
-		try {
-			fr=new FileReader(args[0]);
-		} catch(IOException io) {
-			System.err.println("The file "+args[0]+" could not be opened.");
+		if (args.length < 1) {
+			System.err.println("Pass me the name of the input file.");
 			return;
 		}
-		
+
+		FileReader fr = null;
+		try {
+			fr = new FileReader(args[0]);
+		} catch (IOException io) {
+			System.err.println("The file " + args[0] + " could not be opened.");
+			return;
+		}
+
 		// * Scanner and parser creation
 		Scanner lexico = new Scanner(fr);
 		Parser parser = new Parser(lexico);
 		// * Parsing
-		parser.run();	
-		
+		parser.run();
+
 		Visitor v1 = new IdentificationVisitor();
 		parser.getAST().accept(v1, null);
-		
+
 		Visitor v = new TypeCheckingVisitor();
-		parser.getAST().accept(v,null);
-				
-		// * Check errors 
-		if(EH.getEH().hasErrors()){
+		parser.getAST().accept(v, null);
+
+		// * Check errors
+		if (EH.getEH().hasErrors()) {
 			// * Show errors
 			EH.getEH().showErrors(System.err);
-		}
-		else{			
+		} else {
 			// * Show AST
-			IntrospectorModel model=new IntrospectorModel("Program",parser.getAST());
+			IntrospectorModel model = new IntrospectorModel("Program", parser.getAST());
 			new IntrospectorTree("Introspector", model);
 		}
 	}

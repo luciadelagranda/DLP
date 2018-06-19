@@ -69,5 +69,11 @@ public abstract class TypeAbstract extends ASTNodeAbstract implements Type{
 	public Type parenthesis(List<Expression> arguments) {
 		return null;
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		throw new IllegalStateException("Error al calcular el número de bytes");
+		
+	}
 
 }
