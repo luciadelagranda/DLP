@@ -5,6 +5,7 @@ import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import scanner.Scanner;
 import visitor.IdentificationVisitor;
+import visitor.OffsetVisitor;
 import visitor.TypeCheckingVisitor;
 import visitor.Visitor;
 import parser.Parser;
@@ -36,6 +37,9 @@ public class Main {
 
 		Visitor v = new TypeCheckingVisitor();
 		parser.getAST().accept(v, null);
+		
+		Visitor offset = new OffsetVisitor();
+		parser.getAST().accept(offset, null);
 
 		// * Check errors
 		if (EH.getEH().hasErrors()) {
