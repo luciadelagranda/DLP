@@ -89,4 +89,9 @@ public class CharType extends TypeAbstract implements Type {
 	public int numberOfBytes() {
 		return 1;
 	}
+	
+	@Override
+	public char suffix() {
+		return 'B';
+	}
 }

@@ -94,4 +94,9 @@ public class IntType extends TypeAbstract implements Type {
 	public int numberOfBytes() {
 		return 2;
 	}
+	
+	@Override
+	public char suffix() {
+		return 'I';
+	}
 }

@@ -72,4 +72,9 @@ public class DoubleType extends TypeAbstract implements Type {
 	public int numberOfBytes() {
 		return 4;
 	}
+	
+	@Override
+	public char suffix() {
+		return 'F';
+	}
 }

@@ -75,5 +75,9 @@ public abstract class TypeAbstract extends ASTNodeAbstract implements Type{
 		throw new IllegalStateException("Error al calcular el número de bytes");
 		
 	}
-
+	
+	@Override
+	public char suffix() {
+		throw new IllegalStateException("Error al devolver el sufijo.");
+	}
 }
