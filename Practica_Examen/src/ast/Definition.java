@@ -11,4 +11,5 @@ public interface Definition {
 	
 	public int getScope();
 	public void setScope(int scope);
+	
 }

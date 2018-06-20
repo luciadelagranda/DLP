@@ -2,8 +2,10 @@ package ast.type;
 
 import java.util.List;
 
+
 import ast.ASTNode;
 import ast.Expression;
+import ast.RecordField;
 
 public interface Type extends ASTNode{
 
@@ -32,5 +34,7 @@ public interface Type extends ASTNode{
 	int numberOfBytes();
 
 	char suffix();
+
+	RecordField get(String name);
 	
 }

@@ -46,4 +46,12 @@ public class RecordType extends TypeAbstract implements Type{
 			sum += field.getType().numberOfBytes();
 		return sum;
 	}
+	
+	@Override
+	public RecordField get(String name) {
+		for (RecordField field : fields) 
+			if (name.equals(field.getName())) 
+				return field;
+		return null;
+	}
 }

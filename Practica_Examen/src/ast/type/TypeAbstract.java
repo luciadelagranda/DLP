@@ -4,6 +4,7 @@ import java.util.List;
 
 import ast.ASTNodeAbstract;
 import ast.Expression;
+import ast.RecordField;
 
 public abstract class TypeAbstract extends ASTNodeAbstract implements Type{
 
@@ -79,5 +80,10 @@ public abstract class TypeAbstract extends ASTNodeAbstract implements Type{
 	@Override
 	public char suffix() {
 		throw new IllegalStateException("Error al devolver el sufijo.");
+	}
+	
+	@Override
+	public RecordField get(String identificador) {
+		return null;
 	}
 }
