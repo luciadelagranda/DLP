@@ -99,4 +99,16 @@ public class IntType extends TypeAbstract implements Type {
 	public char suffix() {
 		return 'I';
 	}
+	
+	@Override
+	public Type superType(Type type) {
+		if (type instanceof ErrorType) 
+			return type;
+		else if (type instanceof CharType || type instanceof IntType) 
+			return this;
+		else if (type instanceof DoubleType)
+			return DoubleType.getInstancia();
+
+		return null;
+	}
 }

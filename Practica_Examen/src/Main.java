@@ -1,6 +1,8 @@
 import java.io.FileReader;
 
 import java.io.IOException;
+
+import codeGenerator.ExecuteCodeGeneratorVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import scanner.Scanner;
@@ -40,6 +42,9 @@ public class Main {
 		
 		Visitor offset = new OffsetVisitor();
 		parser.getAST().accept(offset, null);
+		
+		Visitor execute = new ExecuteCodeGeneratorVisitor(args[0], args[1]);
+		parser.getAST().accept(execute, null);
 
 		// * Check errors
 		if (EH.getEH().hasErrors()) {

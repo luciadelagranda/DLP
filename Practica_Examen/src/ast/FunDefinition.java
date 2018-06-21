@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.type.FunctionType;
 import ast.type.Type;
 import visitor.Visitor;
 
@@ -63,6 +64,23 @@ public class FunDefinition extends ASTNodeAbstract implements Definition {
 	public void setScope(int scope) {
 		this.scope = scope;
 		
+	}
+
+
+	public int bytesLocales() {
+		int cont = 0;
+		for(Statement stat : statements)
+			if(stat instanceof VarDefinition)
+				cont += ((VarDefinition) stat).getType().numberOfBytes();
+		return cont;
+	}
+
+
+	public int bytesParametros() {
+		int cont = 0;
+		for(VarDefinition var : ((FunctionType) type).getParameters())
+				cont += var.getType().numberOfBytes();
+		return cont;
 	}
 	
 	

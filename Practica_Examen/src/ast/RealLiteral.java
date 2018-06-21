@@ -20,4 +20,14 @@ public class RealLiteral extends ExpressionAbstract implements Expression{
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
+
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
+	}
+	
+	
 }

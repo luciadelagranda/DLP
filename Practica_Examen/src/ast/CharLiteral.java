@@ -19,4 +19,14 @@ public class CharLiteral extends ExpressionAbstract implements Expression{
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
+	
 }

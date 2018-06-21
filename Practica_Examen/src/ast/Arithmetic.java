@@ -39,6 +39,15 @@ public class Arithmetic extends ExpressionAbstract {
 	public void setRight(Expression right) {
 		this.right = right;
 	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+	
 	
 
 }

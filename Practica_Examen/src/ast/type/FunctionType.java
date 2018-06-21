@@ -65,5 +65,7 @@ public class FunctionType extends TypeAbstract implements Type {
 		return getReturnType().numberOfBytes();
 
 	}
+	
+	
 
 }

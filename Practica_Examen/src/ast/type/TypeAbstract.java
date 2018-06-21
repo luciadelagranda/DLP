@@ -86,4 +86,9 @@ public abstract class TypeAbstract extends ASTNodeAbstract implements Type{
 	public RecordField get(String identificador) {
 		return null;
 	}
+	
+	@Override
+	public Type superType(Type type) {
+		return null;
+	}
 }

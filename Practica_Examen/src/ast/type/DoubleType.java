@@ -77,4 +77,18 @@ public class DoubleType extends TypeAbstract implements Type {
 	public char suffix() {
 		return 'F';
 	}
+
+	public static Type getInstancia() {
+		return instancia;
+	}
+	
+	@Override
+	public Type superType(Type type) {
+		if (type instanceof ErrorType) 
+			return type;
+		else if (type instanceof CharType || type instanceof DoubleType || type instanceof IntType) 
+			return this;
+
+		return null;
+	}
 }

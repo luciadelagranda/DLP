@@ -40,4 +40,5 @@ public class WhileSetatement extends StatementAbstract implements Statement{
 	public void setStatements(List<Statement> statements) {
 		this.statements = statements;
 	}
+
 }

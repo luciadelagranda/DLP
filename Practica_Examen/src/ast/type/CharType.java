@@ -94,4 +94,14 @@ public class CharType extends TypeAbstract implements Type {
 	public char suffix() {
 		return 'B';
 	}
+	
+	@Override
+	public Type superType(Type type) {
+		if (type instanceof ErrorType || type instanceof DoubleType || type instanceof IntType) 
+			return type;
+		else if (type instanceof CharType) 
+			return IntType.getInstancia();
+
+		return null;
+	}
 }

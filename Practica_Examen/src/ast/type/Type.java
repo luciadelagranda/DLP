@@ -36,5 +36,7 @@ public interface Type extends ASTNode{
 	char suffix();
 
 	RecordField get(String name);
+
+	Type superType(Type type);
 	
 }

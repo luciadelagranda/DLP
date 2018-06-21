@@ -25,4 +25,8 @@ public class VoidType extends TypeAbstract implements Type{
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
+
+	public static Type getInstancia() {
+		return instancia;
+	}
 }

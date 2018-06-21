@@ -136,22 +136,22 @@ public class CodeGeneration {
 		out.flush();
 	}
 	
-	private void b2i() {
+	public void b2i() {
 		out.println("B2I");
 		out.flush();
 	}
 	
-	private void i2f() {
+	public void i2f() {
 		out.println("I2F");
 		out.flush();
 	}
 	
-	private void i2b() {
+	public void i2b() {
 		out.println("I2B");
 		out.flush();
 	}
 	
-	private void f2i() {
+	public void f2i() {
 		out.println("F2I");
 		out.flush();
 	}
@@ -225,6 +225,16 @@ public class CodeGeneration {
 	
 	public void lineComment(int constant) {
 		out.println("#line " + constant);
+		out.flush();
+	}
+
+	public int getLabel(int i) {
+		label += i;
+		return label -1;
+	}
+	
+	public void label(int num) {
+		out.println("LABEL" + num + ":");
 		out.flush();
 	}
 
