@@ -66,11 +66,10 @@ public class CharType extends TypeAbstract implements Type {
 
 	@Override
 	public Type promotesTo(Type type) {
-		if (type instanceof CharType) {
+		if (type instanceof CharType)
 			return this;
-		} else if (type instanceof ErrorType || type instanceof DoubleType || type instanceof IntType) {
+		else if (type instanceof ErrorType || type instanceof DoubleType || type instanceof IntType)
 			return type;
-		}
 		return null;
 
 	}

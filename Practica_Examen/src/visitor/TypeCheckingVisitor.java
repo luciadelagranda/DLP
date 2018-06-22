@@ -160,11 +160,12 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 	public Object visit(Invocation invocation, Object param) {
 		invocation.getFuncion().accept(this, param);
 		
-		if(invocation.getArguments() != null)
+		if(!invocation.getArguments().isEmpty()) {
 		for ( Expression ex : invocation.getArguments())
 			ex.accept(this, param);
 		
-		invocation.setType(invocation.getFuncion().getType().parenthesis(invocation.getArguments()));
+		invocation.setType(invocation.getFuncion().getType().parenthesis(invocation.getArguments())); 
+		}
 		
 		if(invocation.getType() == null)
 			invocation.setType(new ErrorType(invocation, "No se puede invocar a esta expresión"));
