@@ -74,7 +74,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		cast.getExp().accept(this, param);
 		cast.getCastType().accept(this, param);
 		
-		cast.setType(cast.getExp().getType().canBeCast(cast.getCastType()));
+		cast.setType(cast.getCastType().canBeCast(cast.getExp().getType()));
 		if(cast.getType() == null)
 			cast.setType(new ErrorType(cast, "No se puede castear a ese tipo"));
 		
@@ -161,11 +161,12 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		invocation.getFuncion().accept(this, param);
 		
 		if(!invocation.getArguments().isEmpty()) {
-		for ( Expression ex : invocation.getArguments())
-			ex.accept(this, param);
+			for ( Expression ex : invocation.getArguments())
+				ex.accept(this, param);
+		}
 		
 		invocation.setType(invocation.getFuncion().getType().parenthesis(invocation.getArguments())); 
-		}
+		
 		
 		if(invocation.getType() == null)
 			invocation.setType(new ErrorType(invocation, "No se puede invocar a esta expresión"));

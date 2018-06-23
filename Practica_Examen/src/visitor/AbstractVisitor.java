@@ -60,7 +60,8 @@ public class AbstractVisitor implements Visitor{
 	@Override
 	public Object visit(Cast cast, Object param) {
 		cast.getExp().accept(this,param);
-		cast.getType().accept(this, param);
+		if(cast.getType()!=null)
+			cast.getType().accept(this, param);
 		return null;
 	}
 

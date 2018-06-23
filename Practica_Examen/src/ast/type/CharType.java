@@ -37,11 +37,11 @@ public class CharType extends TypeAbstract implements Type {
 
 	@Override
 	public Type comparison(Type expression) {
-		if (expression instanceof CharType) {
-			return this;
-		} else if (expression instanceof ErrorType || expression instanceof DoubleType
-				|| expression instanceof IntType) {
+		if (expression instanceof ErrorType) {
 			return expression;
+		} else if (expression instanceof CharType || expression instanceof DoubleType
+				|| expression instanceof IntType) {
+			return IntType.getInstancia();
 		}
 
 		return null;

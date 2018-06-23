@@ -25,7 +25,7 @@ public class ArrayType extends TypeAbstract  implements Type{
 	@Override
 	public Type squareBPacket(Type index) {
 		if (index instanceof IntType) {
-			return this;
+			return of;
 		} else if (index instanceof ErrorType) {
 			return index;
 		} else {
