@@ -1,5 +1,11 @@
 CALL main
 HALT
-main:
-ENTER 2
-#line 5
+p:
+ENTER 0
+RET 0,0,0
+f:
+ENTER 7
+#line 20
+PUSH BP
+PUSHI -4
+ADDI
