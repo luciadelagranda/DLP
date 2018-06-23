@@ -29,6 +29,7 @@ public class Main {
 			return;
 		}
 
+		
 		// * Scanner and parser creation
 		Scanner lexico = new Scanner(fr);
 		Parser parser = new Parser(lexico);
@@ -38,24 +39,42 @@ public class Main {
 		Visitor v1 = new IdentificationVisitor();
 		parser.getAST().accept(v1, null);
 
-		Visitor v = new TypeCheckingVisitor();
-		parser.getAST().accept(v, null);
 		
-		Visitor offset = new OffsetVisitor();
-		parser.getAST().accept(offset, null);
-		
-		Visitor execute = new ExecuteCodeGeneratorVisitor(args[0], args[1]);
-		parser.getAST().accept(execute, null);
-
 		// * Check errors
 		if (EH.getEH().hasErrors()) {
 			// * Show errors
 			EH.getEH().showErrors(System.err);
 		} else {
-			// * Show AST
-			IntrospectorModel model = new IntrospectorModel("Program", parser.getAST());
-			new IntrospectorTree("Introspector", model);
+			
+			Visitor v = new TypeCheckingVisitor();
+			parser.getAST().accept(v, null);
+			
+			if (EH.getEH().hasErrors()) {
+				// * Show errors
+				EH.getEH().showErrors(System.err);
+			} else {
+				Visitor offset = new OffsetVisitor();
+				parser.getAST().accept(offset, null);
+				
+				if (EH.getEH().hasErrors()) {
+					// * Show errors
+					EH.getEH().showErrors(System.err);
+				} else {
+					Visitor execute = new ExecuteCodeGeneratorVisitor(args[0], args[1]);
+					parser.getAST().accept(execute, null);
+				
+					if (EH.getEH().hasErrors()) {
+						// * Show errors
+						EH.getEH().showErrors(System.err);
+					} else {
+						// * Show AST
+						IntrospectorModel model = new IntrospectorModel("Program", parser.getAST());
+						new IntrospectorTree("Introspector", model);
+						
+					}
+				}
+			}
+		}
+			
 		}
 	}
-
-}

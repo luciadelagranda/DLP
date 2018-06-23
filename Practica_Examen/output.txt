@@ -1,0 +1,5 @@
+CALL main
+HALT
+main:
+ENTER 2
+#line 5
