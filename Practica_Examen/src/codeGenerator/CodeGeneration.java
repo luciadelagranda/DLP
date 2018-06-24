@@ -4,6 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import ast.type.CharType;
+import ast.type.DoubleType;
+import ast.type.IntType;
 import ast.type.Type;
 
 public class CodeGeneration {
@@ -15,6 +18,7 @@ public class CodeGeneration {
 
 		try {
 			out = new PrintWriter(new FileWriter(output));
+			label=0;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +46,7 @@ public class CodeGeneration {
 	}
 	
 	public void push(char x) {
-		out.println("PUSHB " + x);
+		out.println("PUSHB " +  (int)x);
 		out.flush();
 	}
 	
@@ -159,7 +163,7 @@ public class CodeGeneration {
 	public void convertion(Type typeOriginal, Type typeConvert) {
 		switch (typeOriginal.suffix()) {
 		case 'B':
-			if(typeConvert.suffix() == 'I')
+			if(typeConvert.suffix() == 'I' )
 				b2i();
 			break;
 		case 'I':
@@ -224,7 +228,9 @@ public class CodeGeneration {
 	}
 	
 	public void lineComment(int constant) {
-		out.println("#line " + constant);
+		out.println();
+		out.println("#line\t" + constant);
+		out.println();
 		out.flush();
 	}
 
@@ -236,6 +242,58 @@ public class CodeGeneration {
 	public void label(int num) {
 		out.println("LABEL" + num + ":");
 		out.flush();
+	}
+	
+	public void arithmetic(String oper, Type type) {
+		if(oper.equals("+"))
+			add(type);
+		else if(oper.equals("-"))
+			sub(type);
+		else if(oper.equals("*"))
+			mul(type);
+		else if(oper.equals("/"))
+			div(type);
+		else if(oper.equals("%"))
+			mod(type);
+	}
+
+	private void mod(Type type) {
+		out.println("MOD" + type.suffix());
+		out.flush();
+		
+	}
+	
+	public void cast(Type typeToCast, Type castType) {
+		if(typeToCast.equals(CharType.getInstancia()) && castType.equals(IntType.getInstancia()))
+			b2i();
+		else if (typeToCast.equals(CharType.getInstancia()) && castType.equals(DoubleType.getInstancia())) {
+			b2i();
+			i2f();
+		}
+		else if (typeToCast.equals(IntType.getInstancia()) && castType.equals(DoubleType.getInstancia()))
+			i2f();
+		else if (typeToCast.equals(IntType.getInstancia()) && castType.equals(CharType.getInstancia()))
+			i2b();
+		else if (typeToCast.equals(DoubleType.getInstancia()) && castType.equals(CharType.getInstancia())) {
+			f2i();
+			i2b();
+		}
+		else if (typeToCast.equals(DoubleType.getInstancia()) && castType.equals(IntType.getInstancia())) 
+			f2i();
+	}
+
+	public void logica(String operator) {
+		switch (operator) {
+		case "&&":
+			and();
+			break;
+		case "||":
+			or();
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 }

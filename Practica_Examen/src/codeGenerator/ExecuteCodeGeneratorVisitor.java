@@ -7,6 +7,7 @@ import ast.IfStatement;
 import ast.Invocation;
 import ast.Program;
 import ast.Read;
+import ast.Return;
 import ast.Statement;
 import ast.VarDefinition;
 import ast.WhileSetatement;
@@ -19,16 +20,18 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 	
 	AddressCodeGeneratorVisitor cgAddress;
 	ValueCodeGeneratorVisitor cgValue;
+	String input;
 
 	public ExecuteCodeGeneratorVisitor(String input, String output) {
 		super(new CodeGeneration(input, output));
 		cgAddress = new AddressCodeGeneratorVisitor(cg);
 		cgValue = new ValueCodeGeneratorVisitor(cg, cgAddress);
-		
+		this.input = input;
 	}
 	
 	@Override
 	public Object visit(Program program, Object param) {
+		cg.sourceComment(input);
 		
 		for (Definition definition : program.getDefinitions()) {
 			if (definition instanceof VarDefinition) 
@@ -137,6 +140,17 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 			cg.pop(((FunctionType) invocation.getFuncion().getType()).getReturnType());
 		return null;
 
+	}
+	
+	@Override
+	public Object visit(Return return1, Object param) {
+		return1.getExpression().accept(cgValue, param);
+
+		FunDefinition funcion = (FunDefinition) param;
+		cg.convertion(return1.getExpression().getType(), ((FunctionType) funcion.getType()).getReturnType());
+		cg.ret(((FunctionType) funcion.getType()).getReturnType().numberOfBytes(), funcion.bytesLocales(), funcion.bytesParametros());
+
+		return null;
 	}
 
 }

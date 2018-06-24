@@ -103,4 +103,8 @@ public class CharType extends TypeAbstract implements Type {
 
 		return null;
 	}
+
+	public static Object getInstancia() {
+		return instancia;
+	}
 }

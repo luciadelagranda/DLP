@@ -1,5 +1,7 @@
 package codeGenerator;
 
+import ast.Arithmetic;
+import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
 import ast.Expression;
@@ -7,6 +9,7 @@ import ast.FieldAccess;
 import ast.Indexin;
 import ast.IntLiteral;
 import ast.Invocation;
+import ast.Logical;
 import ast.RealLiteral;
 import ast.UnaryMinus;
 import ast.UnaryNot;
@@ -36,7 +39,7 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	
 	@Override
 	public Object visit(CharLiteral charLiteral, Object param) {
-		cg.push(charLiteral.getValue());
+		cg.push((char)charLiteral.getValue());
 		return null;
 	}
 	
@@ -101,10 +104,48 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		int cont = 0;
 		for (Expression expression : invocation.getArguments()) {
 			expression.accept(this, param);
-			cont++;
-			cg.convertion(expression.getType(),((FunctionType) invocation.getFuncion().getType()).getParameters().get(cont).getType());
+			cg.convertion(expression.getType(),((FunctionType) invocation.getFuncion().getType()).getParameters().get(cont++).getType());
 		}
 		cg.call(invocation.getFuncion().getName());
+		return null;
+
+	}
+	
+	@Override
+	public Object visit(Arithmetic arithmetic, Object param) {
+		if (arithmetic.getLeft().getType().suffix() == 'B' && arithmetic.getRight().getType().suffix() == 'B') {
+			arithmetic.getLeft().accept(this, param);
+			cg.b2i();
+			arithmetic.getRight().accept(this, param);
+			cg.b2i();
+			cg.arithmetic(arithmetic.getOperator(), IntType.getInstancia());
+			cg.i2b();
+		}
+		else {
+			arithmetic.getLeft().accept(this, param);
+			cg.convertion(arithmetic.getLeft().getType(), arithmetic.getType());
+			arithmetic.getRight().accept(this, param);
+			cg.convertion(arithmetic.getRight().getType(), arithmetic.getType());
+			cg.arithmetic(arithmetic.getOperator(), arithmetic.getType());
+		}
+		return null;
+	}
+	
+	@Override
+	public Object visit(Cast cast, Object param) {
+		cast.getExp().accept(this, param);
+		cg.cast(cast.getExp().getType(), cast.getCastType());
+		return null;
+	}
+	
+	@Override
+	public Object visit(Logical logical, Object param) {
+		logical.getExp1().accept(this, param);
+		cg.convertion(logical.getExp1().getType(), logical.getType());
+		logical.getExp2().accept(this, param);
+		cg.convertion(logical.getExp2().getType(), logical.getType());
+		cg.logica(logical.getOperator());
+
 		return null;
 
 	}

@@ -100,18 +100,18 @@ body: '{' variables sentencias '}'			{$$ = new ArrayList<Statement>(); ((List<St
 	| '{' variables '}'						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).addAll((List<Statement>)$2); }
 	;
 
-sentencias: sentencia						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
-      | sentencias sentencia				{$$ = $1 ; ((List<Statement>)$$).add((Statement)$2);}
+sentencias: sentencia						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).addAll((List<Statement>)$1);}
+      | sentencias sentencia				{$$ = $1 ; ((List<Statement>)$$).addAll((List<Statement>)$2);}
       ;
       		  	 
 sentencia: RETURN expression ';'			{$$ = new Return(scanner.getLine(), scanner.getColumn(), (Expression)$2 );}
-         | while							{$$ = $1;}
+         | while							{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | print 							{$$ = $1;}
          | input							{$$ = $1;}
-         | if								{$$ = $1;}
-         | ifSimple							{$$ = $1;}
-         | invocation ';'					{$$ = $1;}
-         | assignment						{$$ = $1;}
+         | if								{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
+         | ifSimple							{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
+         | invocation ';'					{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
+         | assignment						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          ;
          
 invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
@@ -237,13 +237,20 @@ cast :  '(' tipo ')' expression				{$$ = new Cast(scanner.getLine(), scanner.get
 
 while : WHILE expression ':' '{' sentencias '}'    {$$ = new WhileSetatement(scanner.getLine(), scanner.getColumn(), (Expression)$2, (List<Statement>)$5);}                		               			  	
 
-print: PRINT expressiones ';'		{
-  									 for(Expression exp : ((List<Expression>)$2))
+print: PRINT expressiones ';'		{List<Statement> statements = new ArrayList<Statement>();
+  									 for(Expression exp : ((List<Expression>)$2)){
         								$$ = new Write(scanner.getLine(), scanner.getColumn(), (Expression)exp);
+        							 	statements.add((Statement)$$);
+        							 	}
+        							 	$$=statements;
         							 }			
 
-input: INPUT expressiones ';'		{for(Expression exp : ((List<Expression>)$2))
+input: INPUT expressiones ';'		{List<Statement> statements = new ArrayList<Statement>();
+										for(Expression exp : ((List<Expression>)$2)){
         								$$ = new Read(scanner.getLine(), scanner.getColumn(), (Expression)exp);
+        								statements.add((Statement)$$);
+        								}
+        								$$=statements;
         							}
            
 %%

@@ -639,7 +639,7 @@ final static String yyrule[] = {
 "input : INPUT expressiones ';'",
 };
 
-//#line 250 "../../src/parser/parser.y"
+//#line 257 "../../src/parser/parser.y"
 
 // * C�digo Java
 // * Se crea una clase "Parser", lo que aqu� ubiquemos ser�:
@@ -883,11 +883,11 @@ case 11:
 break;
 case 12:
 //#line 103 "../../src/parser/parser.y"
-{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(0));}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).addAll((List<Statement>)val_peek(0));}
 break;
 case 13:
 //#line 104 "../../src/parser/parser.y"
-{yyval = val_peek(1) ; ((List<Statement>)yyval).add((Statement)val_peek(0));}
+{yyval = val_peek(1) ; ((List<Statement>)yyval).addAll((List<Statement>)val_peek(0));}
 break;
 case 14:
 //#line 107 "../../src/parser/parser.y"
@@ -895,7 +895,7 @@ case 14:
 break;
 case 15:
 //#line 108 "../../src/parser/parser.y"
-{yyval = val_peek(0);}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(0));}
 break;
 case 16:
 //#line 109 "../../src/parser/parser.y"
@@ -907,19 +907,19 @@ case 17:
 break;
 case 18:
 //#line 111 "../../src/parser/parser.y"
-{yyval = val_peek(0);}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(0));}
 break;
 case 19:
 //#line 112 "../../src/parser/parser.y"
-{yyval = val_peek(0);}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(0));}
 break;
 case 20:
 //#line 113 "../../src/parser/parser.y"
-{yyval = val_peek(1);}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(1));}
 break;
 case 21:
 //#line 114 "../../src/parser/parser.y"
-{yyval = val_peek(0);}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add((Statement)val_peek(0));}
 break;
 case 22:
 //#line 117 "../../src/parser/parser.y"
@@ -1187,18 +1187,25 @@ case 80:
 break;
 case 81:
 //#line 240 "../../src/parser/parser.y"
-{
-  									 for(Expression exp : ((List<Expression>)val_peek(1)))
+{List<Statement> statements = new ArrayList<Statement>();
+  									 for(Expression exp : ((List<Expression>)val_peek(1))){
         								yyval = new Write(scanner.getLine(), scanner.getColumn(), (Expression)exp);
+        							 	statements.add((Statement)yyval);
+        							 	}
+        							 	yyval=statements;
         							 }
 break;
 case 82:
-//#line 245 "../../src/parser/parser.y"
-{for(Expression exp : ((List<Expression>)val_peek(1)))
+//#line 248 "../../src/parser/parser.y"
+{List<Statement> statements = new ArrayList<Statement>();
+										for(Expression exp : ((List<Expression>)val_peek(1))){
         								yyval = new Read(scanner.getLine(), scanner.getColumn(), (Expression)exp);
+        								statements.add((Statement)yyval);
+        								}
+        								yyval=statements;
         							}
 break;
-//#line 1133 "Parser.java"
+//#line 1140 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
