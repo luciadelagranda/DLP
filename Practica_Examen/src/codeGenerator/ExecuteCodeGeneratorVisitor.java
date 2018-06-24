@@ -26,6 +26,7 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 		super(new CodeGeneration(input, output));
 		cgAddress = new AddressCodeGeneratorVisitor(cg);
 		cgValue = new ValueCodeGeneratorVisitor(cg, cgAddress);
+		cgAddress.setValue(cgValue);
 		this.input = input;
 	}
 	

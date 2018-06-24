@@ -891,7 +891,7 @@ case 13:
 break;
 case 14:
 //#line 107 "../../src/parser/parser.y"
-{yyval = new Return(scanner.getLine(), scanner.getColumn(), (Expression)val_peek(1) );}
+{yyval = new ArrayList<Statement>(); ((List<Statement>)yyval).add(new Return(scanner.getLine(), scanner.getColumn(), (Expression)val_peek(1) ));}
 break;
 case 15:
 //#line 108 "../../src/parser/parser.y"
@@ -939,15 +939,15 @@ case 25:
 break;
 case 26:
 //#line 125 "../../src/parser/parser.y"
-{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(4),(Statement)val_peek(2),((Statement)val_peek(0)));}
+{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(4),(List<Statement>)val_peek(2),((List<Statement>)val_peek(0)));}
 break;
 case 27:
 //#line 126 "../../src/parser/parser.y"
-{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(6),(Statement)val_peek(4),(List<Statement>)val_peek(1));}
+{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(6),(List<Statement>)val_peek(4),(List<Statement>)val_peek(1));}
 break;
 case 28:
 //#line 127 "../../src/parser/parser.y"
-{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(6),(List<Statement>)val_peek(3),((Statement) val_peek(0)));}
+{yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(6),(List<Statement>)val_peek(3),((List<Statement>) val_peek(0)));}
 break;
 case 29:
 //#line 128 "../../src/parser/parser.y"
@@ -955,7 +955,7 @@ case 29:
 break;
 case 30:
 //#line 131 "../../src/parser/parser.y"
-{List<Statement> st= new ArrayList<Statement>(); st.add((Statement)val_peek(0));
+{List<Statement> st= new ArrayList<Statement>(); st.addAll((List<Statement>)val_peek(0));
 																	 yyval = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)val_peek(2),st) ;}
 break;
 case 31:

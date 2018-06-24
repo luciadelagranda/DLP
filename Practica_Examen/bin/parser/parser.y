@@ -104,7 +104,7 @@ sentencias: sentencia						{$$ = new ArrayList<Statement>(); ((List<Statement>)$
       | sentencias sentencia				{$$ = $1 ; ((List<Statement>)$$).addAll((List<Statement>)$2);}
       ;
       		  	 
-sentencia: RETURN expression ';'			{$$ = new Return(scanner.getLine(), scanner.getColumn(), (Expression)$2 );}
+sentencia: RETURN expression ';'			{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add(new Return(scanner.getLine(), scanner.getColumn(), (Expression)$2 ));}
          | while							{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | print 							{$$ = $1;}
          | input							{$$ = $1;}
@@ -122,13 +122,13 @@ paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Exp
 assignment : expression '=' expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, (Expression)$3);}
            ;
          
-if : IF expression ':' sentencia ELSE sentencia						{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(Statement)$4,((Statement)$6));}
-   | IF expression ':' sentencia ELSE '{' sentencias '}'			{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(Statement)$4,(List<Statement>)$7);}
-   | IF expression ':' '{' sentencias '}' ELSE sentencia			{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$5,((Statement) $8));}
+if : IF expression ':' sentencia ELSE sentencia						{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$4,((List<Statement>)$6));}
+   | IF expression ':' sentencia ELSE '{' sentencias '}'			{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$4,(List<Statement>)$7);}
+   | IF expression ':' '{' sentencias '}' ELSE sentencia			{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$5,((List<Statement>) $8));}
    | IF expression ':' '{' sentencias '}' ELSE '{' sentencias '}'	{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$5,(List<Statement>)$9);}
    ;
    
-ifSimple : IF expression ':' sentencia 		%prec SIMPLE			{List<Statement> st= new ArrayList<Statement>(); st.add((Statement)$4);
+ifSimple : IF expression ':' sentencia 		%prec SIMPLE			{List<Statement> st= new ArrayList<Statement>(); st.addAll((List<Statement>)$4);
 																	 $$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,st) ;}
    		 | IF expression ':' '{' sentencias '}' %prec SIMPLE		{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$5);}
       

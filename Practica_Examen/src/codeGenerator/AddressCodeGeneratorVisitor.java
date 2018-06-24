@@ -48,6 +48,11 @@ public class AddressCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		cg.add(IntType.getInstancia());
 		return null;
 	}
+
+	public void setValue(ValueCodeGeneratorVisitor cgValue2) {
+		this.cgValue = cgValue2;
+		
+	}
 	
 	
 }

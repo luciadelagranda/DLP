@@ -18,7 +18,6 @@ public class CodeGeneration {
 
 		try {
 			out = new PrintWriter(new FileWriter(output));
-			label=0;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -240,7 +239,7 @@ public class CodeGeneration {
 	}
 	
 	public void label(int num) {
-		out.println("LABEL" + num + ":");
+		out.println("label" + num + ":");
 		out.flush();
 	}
 	
