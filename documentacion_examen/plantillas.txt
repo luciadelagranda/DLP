@@ -1,0 +1,225 @@
+
+PLANTILLAS EXECUTE
+------------------------------------------------
+
+EXECUTE[[PROGRAM : Program -> Definition*]]()
+
+	for(Definition d:Definition)
+		if(def instanceof VarDefinition)
+			EXECUTE[[def]]()
+		
+	<CALL MAIN>
+	<HALT>
+
+	for(Definition def:Definition)
+		if(def instanceof FunDefinition)
+			EXECUTE[[def]]()
+_________________________________________________
+
+EXECUTE[[WRITE: Statement -> Exp]] ()
+
+	VALUE[[Exp]]()
+	<OUT> Exp.Type.Suffix()
+_________________________________________________
+
+EXECUTE[[READ: Statement -> Exp]] ()
+	
+	ADDRESS[[Exp]]()
+	<IN> Exp.Type.Suffix()
+	<STORE> Exp.Type.Suffix()
+
+_________________________________________________
+
+EXECUTE[[ASSIGMENT: Statement -> Exp Exp2] ()
+
+	ADDRESS[[Exp]]()
+	VALUE[[Exp2]]()
+	cg.convertion(Exp2.Type,Exp.Type)
+	<STORE> Exp.Type.Suffix()
+	
+_________________________________________________
+
+EXECUTE[[FUNDEFINITION: Definition -> Type Statement*]] ()
+
+	Definition.Name <:>
+	<ENTER> Definition.bytesLocales
+	for(Statement s:Statement*)
+		if(!s instanceof VarDefinition)
+			EXECUTE[[s]]()
+	if(Type.ReturnType instanceof VoidType)
+		<RET> 0 <,> Definition.bytesLocales <,> Definition.bytesParametros
+		
+_________________________________________________
+
+EXECUTE[[WHILESTATEMENT: Statement -> Exp Statement*]] ()
+	
+	int label =  cg.getLabels(2);
+	<LABEL> label <:>
+	VALUE[[Exp]]
+	<JZ><LABEL> label+1
+	for(Statement s:Statement*)
+		EXECUTE[[s]]()
+	<JMP><LABEL> label
+	<LABEL> label+1 <:>
+
+_________________________________________________
+
+EXECUTE[[IFSTATEMENT: Statement	-> Exp stm:Statement* stm2:Statement*]] ()
+
+	int label =  cg.getLabels(2);
+	VALUE[[Exp]]()
+	<JZ><LABEL> label
+	for(Statement s:stm)
+		EXECUTE[[s]]()	
+	<JMP><LABEL> label+1
+	<LABEL> label <:>	
+	for(Statement s:stm2)
+		EXECUTE[[s]]()
+	<LABEL> label+1 <:>
+	
+_________________________________________________
+
+EXECUTE[[INVOCATION: Statement -> Variable Exp*]] ()
+	
+	VALUE[[ (Expression) Statement]]()
+	if(Variable.Type.ReturnType != IO.VoidType)
+		<POP> Variable.Type.ReturnType.Suffix();
+
+_________________________________________________
+
+EXECUTE[[RETURN: Statement -> Exp]] Param -> (FunDefinition) ()
+
+	VALUE[[Exp]]()
+	cg.convertion(Exp.Type,FunDefinition.Type.ReturnType);
+	<RET> FunDefinition.ReturnType.NumberBytes <,> FunDefinition.bytesLocales <,> FunDefinition.bytesParametros
+	
+
+------------------------------------------------
+PLANTILLAS ADDRESS
+------------------------------------------------
+
+ADDRESS[[VARIABLE: Exp -> ID]] ()
+
+	if(Exp.Definition.scope == 0)
+		<PUSHA> Exp.Definition.Offset
+	else
+		<PUSH BP>
+		<PUSHI> Exp.Definition.Offset
+		<ADDI>
+_________________________________________________
+
+ADDRESS[[INDEXING: Exp -> Exp2 Exp3 ]] ()
+
+	ADDRESS[[Exp2]]()
+	VALUE[[Exp3]]()
+	<PUSH> Exp.Type.NumberBytes()
+	<MUL>
+	<ADD>
+
+_________________________________________________
+
+ADDRESS[[FIELDACCESS: Exp -> Exp2 ID]] ()
+	
+	ADDRESS[[Exp2]]
+	<PUSH> Exp2.Type.get(ID).Offset
+	<ADD>
+	
+------------------------------------------------
+PLANTILLAS VALUE
+------------------------------------------------
+
+VALUE[[INTLITERAL: Exp -> Int_Constant]] ()
+
+	<PUSHI> Exp.value
+_________________________________________________
+
+VALUE[[CHARLITERAL: Exp -> Char_Constant]] ()
+
+	<PUSHB> Exp.value
+_________________________________________________
+
+VALUE[[REALLITERAL: Exp -> Real_Constant]] ()
+
+	<PUSHF> Exp.value
+
+_________________________________________________
+
+VALUE[[VARIABLE: Exp -> ID]] ()
+	
+	ADDRESS[[EXP]]()
+	<LOAD> Exp.Type.Suffix() 
+_________________________________________________
+
+VALUE[[ARITHMETIC: Exp -> Exp2 Exp3 ]] () ??
+
+	VALUE[[Exp2]]()
+	supertype = Exp2.Type.SuperType(Exp3.Type)
+	cg.convertion(Exp2.Type,supertype)
+	VALUE[[Exp3]]()
+	cg.convertion(Exp3.Type,supertype)
+	cg.comparison(Exp.operator,supertype)
+	
+_________________________________________________
+
+VALUE[[INDEXING: Exp -> Exp2 Exp3 ]] ()
+	
+	ADDRESS[[Exp]]()
+	<LOAD>Exp.Type.Suffix()
+_________________________________________________
+
+VALUE[[FIELDACCES: Exp -> Exp2 ID]] ()
+
+	ADDRESS[[Exp]]()
+	<LOAD>Exp.Type.Suffix()
+_________________________________________________
+
+VALUE[[COMPARISON: Exp -> Exp2 Exp3 ]] ()
+
+	VALUE[[Exp2]]()
+	supertype = Exp2.Type.SuperType(Exp3.Type)
+	cg.convertion(Exp2.Type,supertype)
+	VALUE[[Exp3]]()
+	cg.convertion(Exp3.Type,supertype)
+	cg.comparison(Exp.operator,supertype)
+	
+_________________________________________________
+
+VALUE[[UNARYNOT: Exp -> Exp2]] ()
+
+	VALUE[[Exp2]]()
+	<NOT>
+
+_________________________________________________
+
+VALUE[[UNARYMINUS: Exp -> Exp2]] ()
+
+	VALUE[[Exp2]]()
+	<PUSHI> -1
+	cg.convertion(IO.IntType, Exp2.Type);
+	<MUL> Exp2.operand.Type
+	
+_________________________________________________
+
+VALUE[[INVOCATION: Exp -> Variable Exp*]]
+	
+	int i=0;
+	for(Expression exp:Exp*)
+		VALUE[[exp]]()
+		cg.convertion(exp.Type,Variable.Type.parameters[i++].Type)
+	<CALL> Variable.Name
+	
+_________________________________________________
+
+VALUE[[CAST: Exp -> CastType Exp2]]
+
+	VALUE[[Exp2]]()
+	cg.cast(Exp2.Type, CastType)
+	
+_________________________________________________
+
+VALUE[[LOGICAL: Exp -> Exp2 Exp3 ]]
+	
+	VALUE[[Exp2]]()
+	VALUE[[Exp3]]()
+	cg.logica(Exp.operator)
+	
