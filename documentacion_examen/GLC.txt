@@ -1,0 +1,132 @@
+programa : definiciones main
+		 ;
+		 
+definiciones : 								
+			 |definiciones definicion       
+			 ; 	
+
+definicion: variable						
+          | funcion							
+		  ;
+		     		         		  
+funcion: DEF ID '(' parametros ')' ':' tipoReturn body 	
+	   ;
+	    	
+main : DEF MAIN '('')' ':' VOID body		
+
+body: '{' variables sentencias '}'			
+	| '{' '}'								
+	| '{' sentencias '}'					
+	| '{' variables '}'						
+	;
+
+sentencias: sentencia						
+      | sentencias sentencia				
+      ;
+      		  	 
+sentencia: RETURN expression ';'			
+         | while							
+         | print 							
+         | input							
+         | if								
+         | ifSimple							
+         | invocation ';'					
+         | assignment						
+         ;
+         
+invocation : ID '('paramsInvocation')'   
+			   
+paramsInvocation: expressiones				 
+				| 							 
+				;
+assignment : expression '=' expression ';' 
+           ;
+		   
+if : IF expression ':' sentencia ELSE sentencia						
+   | IF expression ':' sentencia ELSE '{' sentencias '}'			
+   | IF expression ':' '{' sentencias '}' ELSE sentencia			
+   | IF expression ':' '{' sentencias '}' ELSE '{' sentencias '}'	
+   ;
+   
+ifSimple : IF expression ':' sentencia 																 
+   		 | IF expression ':' '{' sentencias '}' 	
+      
+    
+		       
+parametros: parametrosAUX					
+		  |									
+		  ;
+ 
+parametrosAUX: parametro					
+		  | parametrosAUX ',' parametro		
+		  ;
+		  
+parametro : ID ':' tipo					
+		  ;		  
+		  			 		 
+variables : variable					
+		  | variables variable			
+		 
+variable :  ident ':' tipoCompuesto ';'	
+
+		 ;
+		 
+ident : ID								
+	  | ident ',' ID					
+		 
+tipo : 	 INT 							
+       | DOUBLE							
+       | CHAR							
+
+tipoCompuesto : tipo							   
+			  | '[' INT_CONSTANT ']' tipoCompuesto 
+              | STRUCT '{' bodyStruct '}' 	   	   
+               
+tipoReturn : tipo						
+		   | VOID						
+		   ;
+		         
+
+bodyStruct : variablesStruct							
+		   | bodyStruct variablesStruct	   				
+
+variablesStruct : ident ':' tipoCompuesto ';'
+
+
+expressiones: expression					 
+			| expressiones ',' expression	 
+			
+ 
+expression : ID								 
+		 | expression '+' expression		 
+         | expression '-' expression		 
+         | expression '*' expression		
+         | expression '/' expression		 
+         | expression '%' expression		 
+         | expression '.' ID				 
+         | '(' expression ')'				 
+         | expression '[' expression ']'	 
+         | '!' expression					 
+         | '-' expression					 
+         | expression '>' expression		 
+         | expression '<' expression		 
+         | expression DISTINTO expression    
+         | expression MAYORIGUAL expression  
+         | expression MENORIGUAL expression  
+         | expression EQUIVALENTE expression 
+         | expression AND expression		 
+         | expression OR expression			 
+         | REAL_CONSTANT					 
+         | INT_CONSTANT						 
+         | CHAR_CONSTANT 					 
+         | cast								 
+         | invocation						 
+         ;      
+
+cast :  '(' tipo ')' expression				
+
+while : WHILE expression ':' '{' sentencias '}'               			  	
+
+print: PRINT expressiones ';'				
+
+input: INPUT expressiones ';'
