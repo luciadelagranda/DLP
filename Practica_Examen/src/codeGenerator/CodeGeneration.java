@@ -164,6 +164,10 @@ public class CodeGeneration {
 		case 'B':
 			if(typeConvert.suffix() == 'I' )
 				b2i();
+			else if(typeConvert.suffix() == 'F' ) {
+				b2i();
+				i2f();
+			}
 			break;
 		case 'I':
 			if(typeConvert.suffix() == 'F')
@@ -257,7 +261,13 @@ public class CodeGeneration {
 	}
 
 	public void mod(Type type) {
-		out.println("MOD" + type.suffix());
+		if(type.suffix()!= 'F')
+			out.println("MOD" + type.suffix());
+		else {
+			convertion(type, IntType.getInstancia());
+			out.println("MODI");
+		}
+			
 		out.flush();
 		
 	}

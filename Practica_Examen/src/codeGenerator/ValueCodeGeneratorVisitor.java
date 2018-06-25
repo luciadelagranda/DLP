@@ -113,21 +113,13 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	
 	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {
-		if (arithmetic.getLeft().getType().suffix() == 'B' && arithmetic.getRight().getType().suffix() == 'B') {
 			arithmetic.getLeft().accept(this, param);
-			cg.b2i();
+			Type superType = arithmetic.getLeft().getType().superType(arithmetic.getRight().getType());
+			cg.convertion(arithmetic.getLeft().getType(), superType);
 			arithmetic.getRight().accept(this, param);
-			cg.b2i();
-			cg.arithmetic(arithmetic.getOperator(), IntType.getInstancia());
-			cg.i2b();
-		}
-		else {
-			arithmetic.getLeft().accept(this, param);
-			cg.convertion(arithmetic.getLeft().getType(), arithmetic.getType());
-			arithmetic.getRight().accept(this, param);
-			cg.convertion(arithmetic.getRight().getType(), arithmetic.getType());
-			cg.arithmetic(arithmetic.getOperator(), arithmetic.getType());
-		}
+			cg.convertion(arithmetic.getRight().getType(), superType);
+			cg.arithmetic(arithmetic.getOperator(), superType);
+		
 		return null;
 	}
 	

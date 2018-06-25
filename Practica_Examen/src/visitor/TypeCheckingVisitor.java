@@ -189,7 +189,7 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
-		realLiteral.setType(DoubleType.DoubleTypeInstance(realLiteral.getLine(), realLiteral.getColum()));
+		realLiteral.setType(DoubleType.getInstancia());
 		realLiteral.setLValue(false);
 		return null;
 	}

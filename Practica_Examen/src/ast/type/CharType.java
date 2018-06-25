@@ -76,12 +76,14 @@ public class CharType extends TypeAbstract {
 
 	@Override
 	public Type arithmetic(Type type) {
-		if (type instanceof ErrorType || type instanceof DoubleType || type instanceof IntType)
+		if (type instanceof ErrorType || type instanceof DoubleType
+				|| type instanceof IntType) 
 			return type;
-		if (type instanceof CharType)
+		 else if (type instanceof CharType) 
 			return this;
+		
+		
 		return null;
-
 	}
 
 	@Override

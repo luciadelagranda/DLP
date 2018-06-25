@@ -120,8 +120,7 @@ B2I
 PUSHB 49
 B2I
 MODI
-I2B
-OUTB
+OUTI
 
 #line	21
 
@@ -135,8 +134,7 @@ B2I
 PUSHB 49
 B2I
 ADDI
-I2B
-OUTB
+OUTI
 
 #line	21
 
