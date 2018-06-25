@@ -150,7 +150,7 @@ VALUE[[VARIABLE: Expression -> ID]] ()
 	<LOAD> Expression.Type.Suffix() 
 _________________________________________________
 
-VALUE[[ARITHMETIC: Expression -> Expression2 Expression3 ]] () ??
+VALUE[[ARITHMETIC: Expression -> Expression2 Expression3 ]] ()
 
 	VALUE[[Expression2]]()
 	supertype = Expression2.Type.SuperType(Expression3.Type)
