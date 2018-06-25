@@ -1,8 +1,6 @@
-a:int;
-b:int;
-
+i:int;
 def main():void {
-	a=0;
-	print 2||=a;
-}
+	i=0;
+	print i++;
 	
+}

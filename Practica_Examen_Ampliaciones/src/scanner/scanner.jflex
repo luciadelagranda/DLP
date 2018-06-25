@@ -160,6 +160,9 @@ id					{ this.yylval = yytext();
 					  
 "||="				{ this.yylval = yytext();
 					  return Parser.OR_EQUALS;}
+					  
+"++"				{ this.yylval = yytext();
+					  return Parser.SUM_UNARY;}					  
 					  				  				  			  				  					  	  				  					  
 //CONSTANTES
 

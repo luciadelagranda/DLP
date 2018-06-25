@@ -1,10 +1,30 @@
 #source "input12.txt"
+	' * VariableDef [type=IntType [int], Offset=0, scope=0]
+	' * VariableDef [type=IntType [int], Offset=2, scope=0]
+	' * VariableDef [type=IntType [int], Offset=4, scope=0]
+	' * VariableDef [type=CharType [char], Offset=6, scope=0]
+	' * VariableDef [type=RecordType [fields=[RecordField [name=integer, type=IntType [int], offset=0], RecordField [name=character, type=CharType [char], offset=2]]], Offset=7, scope=0]
+	' * VariableDef [type=ArrayType [size=10, of=ArrayType [size=10, of=IntType [int]]], Offset=10, scope=0]
+
+ ' Invocation to the main function
 CALL main
 HALT
 p:
+	' * Parameters
+
+	' * Local variables
+
 ENTER 0
 RET 0,0,0
 f:
+	' * Parameters
+	' * VariableDef [type=DoubleType [double], Offset=6, scope=1]
+	' * VariableDef [type=IntType [int], Offset=4, scope=1]
+
+	' * Local variables
+	' * VariableDef [type=DoubleType [double], Offset=-4, scope=1]
+	' * VariableDef [type=CharType [char], Offset=-5, scope=1]
+
 ENTER 5
 
 #line	17
@@ -54,6 +74,15 @@ LOADB
 B2I
 RET 2,5,6
 fill:
+	' * Parameters
+	' * VariableDef [type=IntType [int], Offset=8, scope=1]
+	' * VariableDef [type=IntType [int], Offset=6, scope=1]
+	' * VariableDef [type=IntType [int], Offset=4, scope=1]
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-4, scope=1]
+
 ENTER 4
 
 #line	26
@@ -146,6 +175,12 @@ JMP label1
 label2:
 RET 0,4,6
 show:
+	' * Parameters
+	' * VariableDef [type=IntType [int], Offset=4, scope=1]
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+
 ENTER 2
 
 #line	37
@@ -249,6 +284,11 @@ PUSHB 10
 OUTB
 RET 0,2,2
 main:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+
 ENTER 2
 
 #line	49

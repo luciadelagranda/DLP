@@ -1,8 +1,8 @@
 
 %{
-// * Declaraciones de c�digo Java
+// * Declaraciones de código Java
 // * Se sit�an al comienzo del archivo generado
-// * El package lo a�ade yacc si utilizamos la opci�n -Jpackage
+// * El package lo a�ade yacc si utilizamos la opción -Jpackage
 
 import ast.*;
 import ast.type.*;
@@ -62,11 +62,13 @@ import java.util.*;
 
 %token OR_EQUALS
 
+%token SUM_UNARY
+
 
 %right '='
 %left AND OR AND_EQUALS OR_EQUALS
 %left '>' '<' DISTINTO MAYORIGUAL MENORIGUAL EQUIVALENTE
-%left '+' '-'
+%left '+' '-' SUM_UNARY
 %left '*' '/' '%'
 %nonassoc '!'
 %left '.'
@@ -77,7 +79,7 @@ import java.util.*;
 
 
 %%
-// * Gram�tica y acciones Yacc
+// * Gramática y acciones Yacc
 
 programa : definiciones main				{$$ = (List<Definition>)$1; ((List<Definition>)$$).add((FunDefinition)$2);
 											 raiz = new Program(scanner.getLine(), scanner.getColumn(),(List<Definition>)$$);}
@@ -116,6 +118,7 @@ sentencia: RETURN expression ';'			{$$ = new ArrayList<Statement>(); ((List<Stat
          | ifSimple							{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | invocation ';'					{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | assignment						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
+         | expression SUM_UNARY ';'			{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement) new UnarySum(scanner.getLine(), scanner.getColumn(), (Expression)$1));}
          ;
          
 invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
@@ -123,6 +126,7 @@ invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(),
 paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Expression>)$$).addAll((List<Expression>)$1);}
 				| 							 {$$ = new ArrayList<Expression>();}
 				;
+				
 assignment : expression '=' expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, (Expression)$3);}
 		   | expression AND_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
 		   | expression OR_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
@@ -239,6 +243,7 @@ expression : ID								 {$$ = new Variable(scanner.getLine(), scanner.getColumn(
          | CHAR_CONSTANT 					 {$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(),(char)$1);}
          | cast								 {$$ = $1;}
          | invocation						 {$$ = $1;}
+         | expression SUM_UNARY 			 {$$ = new UnarySum(scanner.getLine(), scanner.getColumn(), (Expression)$1);}
          ;      
 
 cast :  '(' tipo ')' expression				{$$ = new Cast(scanner.getLine(), scanner.getColumn(), (Type)$2,(Expression)$4);}

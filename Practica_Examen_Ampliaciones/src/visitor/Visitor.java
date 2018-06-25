@@ -21,6 +21,7 @@ import ast.RecordField;
 import ast.Return;
 import ast.UnaryMinus;
 import ast.UnaryNot;
+import ast.UnarySum;
 import ast.VarDefinition;
 import ast.Variable;
 import ast.WhileSetatement;
@@ -99,6 +100,8 @@ public interface Visitor {
 	Object visit(VoidType voidType, Object param);
 
 	Object visit(AssignmentLogical assignmentLogical, Object param);
+
+	Object visit(UnarySum unarySum, Object param);
 	
 	
 	

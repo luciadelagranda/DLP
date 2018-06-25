@@ -1,7 +1,7 @@
 %right '='
 %left AND OR AND_EQUALS OR_EQUALS
 %left '>' '<' DISTINTO MAYORIGUAL MENORIGUAL EQUIVALENTE
-%left '+' '-'
+%left '+' '-' SUM_UNARY
 %left '*' '/' '%'
 %nonassoc '!'
 %left '.'
@@ -51,6 +51,7 @@ sentencia: RETURN expression ';'			{$$ = new ArrayList<Statement>(); ((List<Stat
          | ifSimple							{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | invocation ';'					{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
          | assignment						{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement)$1);}
+         | expression SUM_UNARY ';'			{$$ = new ArrayList<Statement>(); ((List<Statement>)$$).add((Statement) new UnarySum(scanner.getLine(), scanner.getColumn(), (Expression)$1));}
          ;
          
 invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(), scanner.getColumn(),new Variable(scanner.getLine(), scanner.getColumn(),(String)$1), (List<Expression>)$3);}
@@ -58,7 +59,10 @@ invocation : ID '('paramsInvocation')'   {$$ = new Invocation(scanner.getLine(),
 paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Expression>)$$).addAll((List<Expression>)$1);}
 				| 							 {$$ = new ArrayList<Expression>();}
 				;
+				
 assignment : expression '=' expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, (Expression)$3);}
+		   | expression AND_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
+		   | expression OR_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
            ;
          
 if : IF expression ':' sentencia ELSE sentencia						{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$4,((List<Statement>)$6));}
@@ -165,11 +169,14 @@ expression : ID								 {$$ = new Variable(scanner.getLine(), scanner.getColumn(
          | expression EQUIVALENTE expression {$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
          | expression AND expression		 {$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
          | expression OR expression			 {$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
+         | expression AND_EQUALS expression	 {$$ = new AssignmentLogical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
+         | expression OR_EQUALS expression	 {$$ = new AssignmentLogical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}	
          | REAL_CONSTANT					 {$$ = new RealLiteral(scanner.getLine(), scanner.getColumn(),(Double)$1);}
          | INT_CONSTANT						 {$$ = new IntLiteral(scanner.getLine(), scanner.getColumn(),(int)$1);}
          | CHAR_CONSTANT 					 {$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(),(char)$1);}
          | cast								 {$$ = $1;}
          | invocation						 {$$ = $1;}
+         | expression SUM_UNARY 			 {$$ = new UnarySum(scanner.getLine(), scanner.getColumn(), (Expression)$1);}
          ;      
 
 cast :  '(' tipo ')' expression				{$$ = new Cast(scanner.getLine(), scanner.getColumn(), (Type)$2,(Expression)$4);}

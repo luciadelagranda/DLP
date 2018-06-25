@@ -25,6 +25,7 @@ import ast.Return;
 import ast.Statement;
 import ast.UnaryMinus;
 import ast.UnaryNot;
+import ast.UnarySum;
 import ast.Variable;
 import ast.WhileSetatement;
 import ast.type.CharType;
@@ -229,6 +230,22 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		unaryMinus.setLValue(false);
 		return null;
 	}
+	
+	@Override
+	public Object visit(UnarySum unarySum, Object param) {
+		if(unarySum.getOperand() instanceof Variable) {
+		unarySum.getOperand().accept(this, param);
+		unarySum.setType(unarySum.getOperand().getType().arithmetic());
+		if(unarySum.getType() == null) {
+			unarySum.setType(new ErrorType(unarySum, "No se puede sumar este tipo"));
+		}
+		}
+		else
+			unarySum.setType(new ErrorType(unarySum, "No se puede añadir uno si no es una variable"));
+		
+		unarySum.setLValue(false);
+		return null;
+	}
 
 	@Override
 	public Object visit(UnaryNot unaryNot, Object param) {
@@ -283,9 +300,8 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		
 		if (return1.getExpression().getType()!= null) {
 			FunctionType funcionType = (FunctionType) param;
-			return1.getExpression().getType().equals(funcionType.getReturnType());
 
-			if (!return1.getExpression().getType().equals(funcionType.getReturnType())) {
+			if (return1.getExpression().getType().promotesTo(funcionType.getReturnType()) == null) {
 				new ErrorType(return1,
 						"El tipo de la funcion no es compatible con el tipo de retorno.");
 			}

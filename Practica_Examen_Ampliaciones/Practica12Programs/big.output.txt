@@ -1,10 +1,28 @@
 #source "big.input.txt"
+	' * VariableDef [type=RecordType [fields=[RecordField [name=integer, type=IntType [int], offset=0], RecordField [name=character, type=CharType [char], offset=2]]], Offset=0, scope=0]
+	' * VariableDef [type=ArrayType [size=2, of=RecordType [fields=[RecordField [name=employees, type=ArrayType [size=2, of=RecordType [fields=[RecordField [name=age, type=IntType [int], offset=0]]]], offset=0]]]], Offset=3, scope=0]
+	' * VariableDef [type=ArrayType [size=8, of=ArrayType [size=3, of=IntType [int]]], Offset=11, scope=0]
+
+ ' Invocation to the main function
 CALL main
 HALT
 p:
+	' * Parameters
+
+	' * Local variables
+
 ENTER 0
 RET 0,0,0
 f:
+	' * Parameters
+	' * VariableDef [type=DoubleType [double], Offset=6, scope=1]
+	' * VariableDef [type=IntType [int], Offset=4, scope=1]
+
+	' * Local variables
+	' * VariableDef [type=DoubleType [double], Offset=-4, scope=1]
+	' * VariableDef [type=CharType [char], Offset=-5, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-7, scope=1]
+
 ENTER 7
 
 #line	20
@@ -85,6 +103,11 @@ ADDI
 LOADI
 RET 2,7,6
 initialize:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+
 ENTER 2
 
 #line	33
@@ -269,6 +292,12 @@ JMP label3
 label4:
 RET 0,2,0
 main:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-4, scope=1]
+
 ENTER 4
 
 #line	49

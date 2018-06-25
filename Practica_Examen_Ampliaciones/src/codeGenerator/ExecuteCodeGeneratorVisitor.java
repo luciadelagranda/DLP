@@ -10,10 +10,13 @@ import ast.Program;
 import ast.Read;
 import ast.Return;
 import ast.Statement;
+import ast.UnarySum;
 import ast.VarDefinition;
+import ast.Variable;
 import ast.WhileSetatement;
 import ast.Write;
 import ast.type.FunctionType;
+import ast.type.IntType;
 import ast.type.Type;
 import ast.type.VoidType;
 
@@ -169,6 +172,17 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 		cg.convertion(return1.getExpression().getType(), ((FunctionType) funcion.getType()).getReturnType());
 		cg.ret(((FunctionType) funcion.getType()).getReturnType().numberOfBytes(), funcion.bytesLocales(), funcion.bytesParametros());
 
+		return null;
+	}
+	
+	@Override
+	public Object visit(UnarySum unarySum, Object param) {
+		unarySum.getOperand().accept(cgAddress, param);
+		unarySum.getOperand().accept(cgValue, param);
+		cg.push(1);
+		cg.convertion(IntType.getInstancia(), unarySum.getType());
+		cg.add(unarySum.getType()); 
+		cg.store(unarySum.getType());
 		return null;
 	}
 

@@ -1,0 +1,105 @@
+#source "input9.txt"
+	' * VariableDef [type=IntType [int], Offset=0, scope=0]
+	' * VariableDef [type=DoubleType [double], Offset=2, scope=0]
+	' * VariableDef [type=CharType [char], Offset=6, scope=0]
+
+ ' Invocation to the main function
+CALL main
+HALT
+f:
+	' * Parameters
+	' * VariableDef [type=IntType [int], Offset=8, scope=1]
+	' * VariableDef [type=DoubleType [double], Offset=4, scope=1]
+
+	' * Local variables
+	' * VariableDef [type=DoubleType [double], Offset=-4, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-6, scope=1]
+
+ENTER 6
+
+#line	10
+
+PUSH BP
+PUSHI -6
+ADDI
+PUSH BP
+PUSHI 8
+ADDI
+LOADI
+STOREI
+
+#line	11
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSH BP
+PUSHI 4
+ADDI
+LOADF
+STOREF
+
+#line	12
+
+PUSH BP
+PUSHI 8
+ADDI
+LOADI
+RET 2,6,6
+main:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=RecordType [fields=[RecordField [name=integer, type=IntType [int], offset=0], RecordField [name=character, type=CharType [char], offset=2]]], Offset=-3, scope=1]
+
+ENTER 3
+
+#line	22
+
+PUSHA 0
+PUSHI 3
+STOREI
+
+#line	23
+
+PUSHA 6
+PUSHB 97
+STOREB
+
+#line	24
+
+PUSHA 2
+PUSHF 3.8
+STOREF
+
+#line	25
+
+PUSH BP
+PUSHI -3
+ADDI
+PUSHI 0
+ADDI
+PUSHA 0
+LOADI
+STOREI
+
+#line	26
+
+PUSH BP
+PUSHI -3
+ADDI
+PUSHI 2
+ADDI
+PUSHA 6
+LOADB
+STOREB
+
+#line	27
+
+PUSHA 0
+LOADI
+PUSHA 2
+LOADF
+CALL f
+POPI
+RET 0,3,0

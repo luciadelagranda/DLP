@@ -92,7 +92,15 @@ EXECUTE[[RETURN: Statement -> Expression]] Param -> (FunDefinition) ()
 	VALUE[[Expression]]()
 	cg.convertion(Expression.Type,FunDefinition.Type.ReturnType);
 	<RET> FunDefinition.ReturnType.NumberBytes <,> FunDefinition.bytesLocales <,> FunDefinition.bytesParametros
-	
+_________________________________________________
+
+EXECUTE[[UNARYSUM: Statement -> Expression]] ()
+	ADDRESS[[Expression]]()
+	VALUE[[Expression]]()
+	<PUSHI> 1
+	cg.convertion(IO.IntType, unarySum.Type);
+	<ADD> Expression.Type
+	<STORE> Expression.Type
 
 ------------------------------------------------
 PLANTILLAS ADDRESS
@@ -200,7 +208,7 @@ VALUE[[UNARYMINUS: Expression -> Expression2]] ()
 	
 _________________________________________________
 
-VALUE[[INVOCATION: Expression -> Variable Expression*]] ()
+VALUE[[INVOCATION: Expression -> Variable Expression*]]
 	
 	int i=0;
 	for(Expressionression Expression:Expression*)
@@ -210,19 +218,40 @@ VALUE[[INVOCATION: Expression -> Variable Expression*]] ()
 	
 _________________________________________________
 
-VALUE[[CAST: Expression -> CastType Expression2]] ()
+VALUE[[CAST: Expression -> CastType Expression2]]
 
 	VALUE[[Expression2]]()
 	cg.cast(Expression2.Type, CastType)
 	
 _________________________________________________
 
-VALUE[[LOGICAL: Expression -> Expression2 Expression3 ]] ()
+VALUE[[LOGICAL: Expression -> Expression2 Expression3 ]]
 	
 	VALUE[[Expression2]]()
-	cg.convertion(Expression2.Type, Expression.Type)
 	VALUE[[Expression3]]()
-	cg.convertion(Expression3.Type, Expression.Type)
+	cg.logica(Expression.operator)
+_________________________________________________
+
+VALUE[[UNARYSUM: Expression -> Expression]] ()
+	ADDRESS[[Expression]]()
+	VALUE[[Expression]]()
+	<PUSHI> 1
+	cg.convertion(IO.IntType, unarySum.Type);
+	<ADD> Expression.Type
+	<STORE> Expression.Type
+	VALUE[[Expression]]()
+
+_________________________________________________
+
+VALUE[[ASSIGNMENTLOGICAL: Expression -> Expression1 Operator Expression2]] ()
+	VALUE[[Expression1]]()
+	cg.convertion(Expression1.Type, Expression.Type)
+	VALUE[[Expression2]]()
+	cg.convertion(Expression2.Type, Expression.Type)
 	cg.logica(Expression.operator)
 	
-
+	ADDRESS[[Expression1]]()
+	VALUE[[Expression2]]()
+	cg.convertion(Expression2.Type,Expression.Type)
+	<STORE> Expression.Type.Suffix()
+	

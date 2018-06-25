@@ -47,7 +47,7 @@ public class FunctionType extends TypeAbstract  {
 		if (parameters.size() != expressions.size())
 			return null;
 		for (int i = 0; i < expressions.size(); i++) {
-			if (!expressions.get(i).getType().equals(parameters.get(i).getType()))
+			if (expressions.get(i).getType().promotesTo(parameters.get(i).getType()) == null)
 				return new ErrorType(expressions.get(i).getType().getLine(), expressions.get(i).getType().getColum(),
 						"Los tipos de los argumentos no coinciden con los tipos de los parámetros. ");
 		}

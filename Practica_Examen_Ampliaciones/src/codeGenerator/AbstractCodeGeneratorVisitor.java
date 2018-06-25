@@ -20,6 +20,7 @@ import ast.RecordField;
 import ast.Return;
 import ast.UnaryMinus;
 import ast.UnaryNot;
+import ast.UnarySum;
 import ast.VarDefinition;
 import ast.Variable;
 import ast.WhileSetatement;
@@ -217,6 +218,12 @@ public class AbstractCodeGeneratorVisitor implements Visitor {
 	@Override
 	public Object visit(AssignmentLogical assignmentLogical, Object param) {
 		throw new IllegalStateException("Plantilla no definida, Assigancion logica");
+	}
+
+	@Override
+	public Object visit(UnarySum unarySum, Object param) {
+		throw new IllegalStateException("Plantilla no definida, Suma unaria");
+		
 	}
 
 }

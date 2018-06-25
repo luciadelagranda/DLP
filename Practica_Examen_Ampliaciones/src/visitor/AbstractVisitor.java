@@ -23,6 +23,7 @@ import ast.Return;
 import ast.Statement;
 import ast.UnaryMinus;
 import ast.UnaryNot;
+import ast.UnarySum;
 import ast.VarDefinition;
 import ast.Variable;
 import ast.WhileSetatement;
@@ -244,6 +245,12 @@ public class AbstractVisitor implements Visitor{
 	public Object visit(AssignmentLogical assignmentLogical, Object param) {
 		assignmentLogical.getExp1().accept(this, param);
 		assignmentLogical.getExp2().accept(this, param);
+		return null;
+	}
+
+	@Override
+	public Object visit(UnarySum unarySum, Object param) {
+		unarySum.getOperand().accept(this, param);
 		return null;
 	}
 

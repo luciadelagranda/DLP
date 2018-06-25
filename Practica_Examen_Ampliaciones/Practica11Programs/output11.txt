@@ -1,7 +1,19 @@
 #source "input11.txt"
+	' * VariableDef [type=ArrayType [size=10, of=DoubleType [double]], Offset=0, scope=0]
+
+ ' Invocation to the main function
 CALL main
 HALT
 main:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=DoubleType [double], Offset=-4, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-6, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-8, scope=1]
+	' * VariableDef [type=ArrayType [size=4, of=ArrayType [size=5, of=IntType [int]]], Offset=-48, scope=1]
+	' * VariableDef [type=RecordType [fields=[RecordField [name=day, type=IntType [int], offset=0], RecordField [name=month, type=IntType [int], offset=2], RecordField [name=year, type=IntType [int], offset=4]]], Offset=-54, scope=1]
+
 ENTER 54
 
 #line	12

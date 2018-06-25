@@ -80,7 +80,7 @@ public class CharType extends TypeAbstract {
 				|| type instanceof IntType) 
 			return type;
 		 else if (type instanceof CharType) 
-			return this;
+			return IntType.IntTypeInstance(type.getLine(), type.getColum());
 		
 		
 		return null;

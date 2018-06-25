@@ -14,6 +14,7 @@ import ast.Logical;
 import ast.RealLiteral;
 import ast.UnaryMinus;
 import ast.UnaryNot;
+import ast.UnarySum;
 import ast.Variable;
 import ast.type.FunctionType;
 import ast.type.IntType;
@@ -92,6 +93,18 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	}
 	
 	@Override
+	public Object visit(UnarySum unarySum, Object param) {
+		unarySum.getOperand().accept(cgAddress, param);
+		unarySum.getOperand().accept(this, param);
+		cg.push(1);
+		cg.convertion(IntType.getInstancia(), unarySum.getType());
+		cg.add(unarySum.getType()); 
+		cg.store(unarySum.getType()); 
+		unarySum.getOperand().accept(this, param); 
+		return null;
+	}
+	
+	@Override
 	public Object visit(UnaryMinus unaryMinus, Object param) {
 		unaryMinus.getOperand().accept(this, param);
 		cg.push(-1);
@@ -158,7 +171,6 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		return null;
 
 	}
-	
 	
 
 }

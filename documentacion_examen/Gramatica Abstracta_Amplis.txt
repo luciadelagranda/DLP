@@ -1,0 +1,32 @@
+
+Program: Program -> Definition*
+
+VarDefinition: Definition -> Type ID
+FunDefinition: Definition -> Type Statement*
+
+Return: Statement -> Expression
+WhileStatement: Statement -> Expression Statement*
+Write: Statement -> Expression*
+Read: Statement -> Expression*
+IfStatement: Statement	-> Expression stm:Statement* stm2:Statement*
+Invocation: Statement -> Variable Expression*
+Assigment: Statement -> Expression1 Expression2
+UnarySum: Statement -> valor:Expression
+
+
+Variable: Expression -> ID
+Arithmetic: Expression -> Expression1:Expression Expression2:Expression
+FieldAcces: Expression -> name:Expression ID
+Indexing: Expression -> Expression1:Expression Expression2:Expression
+UnaryNot: Expression -> valor:Expression
+UnaryMinus: Expression -> valor:Expression
+UnarySum: Expression -> valor:Expression
+Comparison: Expression -> Expression1:Expression Expression2:Expression
+Logical: Expression -> Expression1:Expression Expression2:Expression
+RealLiteral: Expression -> RealConstant
+IntLiteral: Expression -> IntConstant
+ChaLiteral: Expression -> CharConstant
+Cast: Expression -> CastType valor:Expression 
+Invocation: Expression -> Variable Expression*
+AssignmentLogical: Expression -> Expression1:Expression Operator:String Expression2:Expression
+
