@@ -35,9 +35,14 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 		cg.sourceComment(input);
 		
 		for (Definition definition : program.getDefinitions()) {
-			if (definition instanceof VarDefinition) 
-				definition.accept(this, param);}
-			
+			if (definition instanceof VarDefinition) { 
+				definition.accept(this, param);
+				cg.varComment(definition);
+			}
+		}
+		
+		cg.space();	
+		cg.mainComment();
 		cg.call("main");
 		cg.halt();
 
@@ -78,8 +83,20 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
 		cg.id(funDefinition.getName());
+		cg.paramComment();
+		
+		for (VarDefinition var : ((FunctionType) funDefinition.getType()).getParameters())
+			cg.varComment(var);
+		cg.space();
+		cg.localComment();
+		
+		for (Statement statement : funDefinition.getStatements()) {
+			if (statement instanceof VarDefinition) {
+				cg.varComment((VarDefinition) statement);
+			}
+		}
+		cg.space();	
 		cg.enter(funDefinition.bytesLocales());
-
 		for (Statement stat : funDefinition.getStatements()) {
 			if (!(stat instanceof VarDefinition)) {
 				cg.lineComment(stat.getLine());
