@@ -73,8 +73,8 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	@Override
 	public Object visit(Comparison comparison, Object param) {
 
-		Type superType = comparison.getExp1().getType().superType(comparison.getExp2().getType());
 		comparison.getExp1().accept(this, param);
+		Type superType = comparison.getExp1().getType().superType(comparison.getExp2().getType());
 		cg.convertion(comparison.getExp1().getType(), superType);
 		comparison.getExp2().accept(this, param);
 		cg.convertion(comparison.getExp2().getType(), superType);
