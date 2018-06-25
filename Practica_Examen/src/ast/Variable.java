@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Variable extends ExpressionAbstract implements Expression{
+public class Variable extends ExpressionAbstract {
 	
 	private String name;
 	private Definition varDefinition;

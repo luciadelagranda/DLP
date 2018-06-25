@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Write extends StatementAbstract implements Statement{
+public class Write extends StatementAbstract{
 
 	private Expression expression;
 

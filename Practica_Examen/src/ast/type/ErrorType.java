@@ -4,7 +4,7 @@ import ast.ASTNode;
 import errorhandler.EH;
 import visitor.Visitor;
 
-public class ErrorType extends TypeAbstract implements Type{
+public class ErrorType extends TypeAbstract {
 	
 	private String message;
 

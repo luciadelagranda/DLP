@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class DoubleType extends TypeAbstract implements Type {
+public class DoubleType extends TypeAbstract {
 
 	private static DoubleType instancia;
 

@@ -8,7 +8,7 @@ import ast.Expression;
 import ast.VarDefinition;
 import visitor.Visitor;
 
-public class FunctionType extends TypeAbstract implements Type {
+public class FunctionType extends TypeAbstract  {
 
 	private List<VarDefinition> parameters;
 	private Type returnType;

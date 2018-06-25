@@ -5,7 +5,7 @@ import java.util.List;
 import ast.RecordField;
 import visitor.Visitor;
 
-public class RecordType extends TypeAbstract implements Type{
+public class RecordType extends TypeAbstract {
 
 	private List<RecordField> fields;
 

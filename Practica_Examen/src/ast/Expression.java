@@ -3,7 +3,7 @@ package ast;
 import ast.type.Type;
 import visitor.Visitor;
 
-public interface Expression {
+public interface Expression extends ASTNode{
 	
 	public boolean getLValue();
 	public void setLValue(boolean value);

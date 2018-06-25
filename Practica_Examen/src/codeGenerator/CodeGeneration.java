@@ -256,7 +256,7 @@ public class CodeGeneration {
 			mod(type);
 	}
 
-	private void mod(Type type) {
+	public void mod(Type type) {
 		out.println("MOD" + type.suffix());
 		out.flush();
 		

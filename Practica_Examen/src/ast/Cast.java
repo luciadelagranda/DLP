@@ -3,7 +3,7 @@ package ast;
 import ast.type.Type;
 import visitor.Visitor;
 
-public class Cast extends ExpressionAbstract implements Expression {
+public class Cast extends ExpressionAbstract {
 
 	private Type castType;
 	private Expression exp;

@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class IntLiteral extends ExpressionAbstract implements Expression{
+public class IntLiteral extends ExpressionAbstract {
 
 	private int value;
 

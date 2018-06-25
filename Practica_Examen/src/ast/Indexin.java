@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Indexin extends ExpressionAbstract implements Expression{
+public class Indexin extends ExpressionAbstract implements Statement{
 
 	private Expression exp1;
 	private Expression exp2;

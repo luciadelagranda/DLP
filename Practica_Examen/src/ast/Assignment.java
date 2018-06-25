@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Assignment extends StatementAbstract implements Statement{
+public class Assignment extends StatementAbstract {
 	
 	private Expression left;
 	private Expression right;

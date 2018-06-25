@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class IntType extends TypeAbstract implements Type {
+public class IntType extends TypeAbstract{
 
 	private static IntType instancia;
 

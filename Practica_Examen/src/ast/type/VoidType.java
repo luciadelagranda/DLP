@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class VoidType extends TypeAbstract implements Type{
+public class VoidType extends TypeAbstract {
 
 	private static VoidType instancia;
 	

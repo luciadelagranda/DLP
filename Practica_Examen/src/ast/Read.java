@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Read extends StatementAbstract implements Statement{
+public class Read extends StatementAbstract{
 
 	private Expression expression;
 

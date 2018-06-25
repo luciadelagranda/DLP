@@ -3,7 +3,7 @@ package ast;
 import ast.type.Type;
 import visitor.Visitor;
 
-public class VarDefinition extends StatementAbstract implements Definition, Statement {
+public class VarDefinition extends StatementAbstract implements Definition{
 
 	public Type type;
 	public int offset;

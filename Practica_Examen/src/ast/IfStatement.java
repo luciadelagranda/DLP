@@ -7,7 +7,7 @@ import visitor.Visitor;
 
 
 
-public class IfStatement extends StatementAbstract implements Statement{
+public class IfStatement extends StatementAbstract{
 
 	private Expression condition;
 	private List<Statement> ifBody;

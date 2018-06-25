@@ -5,7 +5,8 @@ import java.util.List;
 
 import visitor.Visitor;
 
-public class WhileSetatement extends StatementAbstract implements Statement{
+public class WhileSetatement extends StatementAbstract
+{
 
 	private Expression condition;
 	private List<Statement> statements;

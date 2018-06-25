@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class UnaryNot extends ExpressionAbstract implements Expression {
+public class UnaryNot extends ExpressionAbstract  {
 
 	private Expression operand;
 

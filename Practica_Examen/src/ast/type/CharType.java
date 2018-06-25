@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class CharType extends TypeAbstract implements Type {
+public class CharType extends TypeAbstract {
 
 	private static CharType instancia;
 

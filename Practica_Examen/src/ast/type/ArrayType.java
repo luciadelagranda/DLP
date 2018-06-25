@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class ArrayType extends TypeAbstract  implements Type{
+public class ArrayType extends TypeAbstract {
 
 	private int size;
 	private Type of;

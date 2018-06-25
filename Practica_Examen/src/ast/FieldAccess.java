@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class FieldAccess extends ExpressionAbstract implements Expression{
+public class FieldAccess extends ExpressionAbstract{
 	
 	private Expression exp1;
 	private String name;
