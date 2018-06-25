@@ -298,6 +298,12 @@ public class CodeGeneration {
 		case "||":
 			or();
 			break;
+		case "&&=":
+			and();
+			break;
+		case "||=":
+			or();
+			break;
 		default:
 			break;
 		}

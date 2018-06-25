@@ -58,9 +58,13 @@ import java.util.*;
 	
 %token AND
 
+%token AND_EQUALS
+
+%token OR_EQUALS
+
 
 %right '='
-%left AND OR
+%left AND OR AND_EQUALS OR_EQUALS
 %left '>' '<' DISTINTO MAYORIGUAL MENORIGUAL EQUIVALENTE
 %left '+' '-'
 %left '*' '/' '%'
@@ -120,6 +124,8 @@ paramsInvocation: expressiones				 {$$ = new ArrayList<Expression>(); ((List<Exp
 				| 							 {$$ = new ArrayList<Expression>();}
 				;
 assignment : expression '=' expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, (Expression)$3);}
+		   | expression AND_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
+		   | expression OR_EQUALS expression ';' {$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression)$1, new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3));}
            ;
          
 if : IF expression ':' sentencia ELSE sentencia						{$$ = new IfStatement(scanner.getLine(), scanner.getColumn(),(Expression)$2,(List<Statement>)$4,((List<Statement>)$6));}
@@ -225,7 +231,9 @@ expression : ID								 {$$ = new Variable(scanner.getLine(), scanner.getColumn(
          | expression MENORIGUAL expression  {$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
          | expression EQUIVALENTE expression {$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
          | expression AND expression		 {$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
-         | expression OR expression			 {$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}	
+         | expression OR expression			 {$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
+         | expression AND_EQUALS expression	 {$$ = new AssignmentLogical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}
+         | expression OR_EQUALS expression	 {$$ = new AssignmentLogical(scanner.getLine(), scanner.getColumn(), (Expression)$1,(String) $2, (Expression)$3);}	
          | REAL_CONSTANT					 {$$ = new RealLiteral(scanner.getLine(), scanner.getColumn(),(Double)$1);}
          | INT_CONSTANT						 {$$ = new IntLiteral(scanner.getLine(), scanner.getColumn(),(int)$1);}
          | CHAR_CONSTANT 					 {$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(),(char)$1);}

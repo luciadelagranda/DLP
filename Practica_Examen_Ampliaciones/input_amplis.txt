@@ -1,0 +1,8 @@
+a:int;
+b:int;
+
+def main():void {
+	a=0;
+	print 2||=a;
+}
+	

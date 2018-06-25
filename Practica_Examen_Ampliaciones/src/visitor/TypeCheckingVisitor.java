@@ -7,6 +7,7 @@ package visitor;
 import ast.Arithmetic;
 
 import ast.Assignment;
+import ast.AssignmentLogical;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
@@ -183,6 +184,28 @@ public class TypeCheckingVisitor extends AbstractVisitor{
 		if(logical.getType()== null)
 			logical.setType(new ErrorType(logical, "No se puede hacer una operación lógica de estos tipos"));
 		logical.setLValue(false);
+		return null;
+	}
+	
+	@Override
+	public Object visit(AssignmentLogical assignmentLogical, Object param) {
+		assignmentLogical.getExp1().accept(this, param);
+		assignmentLogical.getExp2().accept(this, param);
+		assignmentLogical.setType(assignmentLogical.getExp1().getType().logical(assignmentLogical.getExp2().getType()));
+		if(assignmentLogical.getType()== null)
+			assignmentLogical.setType(new ErrorType(assignmentLogical, "No se puede hacer una operación lógica de estos tipos"));
+		
+		if(!assignmentLogical.getExp1().getLValue()) {
+			String msg = "La expresión de la derecha no se puede asignar a la expresion de la izquierda. La asignacion no es correcta. ";
+			new ErrorType(assignmentLogical, msg);
+		}
+		
+		if(assignmentLogical.getExp1().getType()!=null && assignmentLogical.getExp2().getType()!=null) {
+			assignmentLogical.getExp1().setType(assignmentLogical.getExp2().getType().promotesTo(assignmentLogical.getExp1().getType()));
+		
+			if(assignmentLogical.getExp1().getType() == null)
+				assignmentLogical.getExp1().setType( new ErrorType(assignmentLogical, "El tipo de la asignación no coincide."));
+		}
 		return null;
 	}
 

@@ -1,11 +1,11 @@
-// ************  Código a incluir ********************
+// ************  Cï¿½digo a incluir ********************
 
 package scanner;
 import parser.Parser;
 
 %%
 // ************  Opciones ********************
-// % debug // * Opción para depurar
+// % debug // * Opciï¿½n para depurar
 %byaccj
 %class Scanner
 %public
@@ -14,15 +14,15 @@ import parser.Parser;
 %column
 
 %{
-// ************  Atributos y métodos ********************
+// ************  Atributos y mï¿½todos ********************
 
-// * Para acceder al número de línea (yyline es package)
+// * Para acceder al nï¿½mero de lï¿½nea (yyline es package)
 public int getLine() { 
 	// * Flex empieza en cero
 	return yyline+1;
 }
 
-// * Para acceder al número de columna (yycolumn es package)
+// * Para acceder al nï¿½mero de columna (yycolumn es package)
 public int getColumn() { 
 	// * Flex empieza en cero
 	return yycolumn+1;
@@ -150,10 +150,16 @@ id					{ this.yylval = yytext();
 					  return '!'; }
 							
 "||" 				{ this.yylval = yytext();
-					  return Parser.OR; }
-							
+					  return Parser.OR; }						
+
 "&&" 				{ this.yylval = yytext();
 					  return Parser.AND; } 
+
+"&&="				{ this.yylval = yytext();
+					  return Parser.AND_EQUALS;}	
+					  
+"||="				{ this.yylval = yytext();
+					  return Parser.OR_EQUALS;}
 					  				  				  			  				  					  	  				  					  
 //CONSTANTES
 
@@ -210,5 +216,5 @@ id					{ this.yylval = yytext();
          			  return '.'; } 			  
          			  		       		
 	  
-// * Cualquier otro carácter
+// * Cualquier otro carï¿½cter
 .			{ System.err.println ("Lexical error at line " 	+ this.getLine() + " and column "+getColumn()+":\n\tUnknow character \'"+ yycharat(0)+"\'."); }		

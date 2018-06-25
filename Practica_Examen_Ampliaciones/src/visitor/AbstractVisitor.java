@@ -2,6 +2,7 @@ package visitor;
 
 import ast.Arithmetic;
 import ast.Assignment;
+import ast.AssignmentLogical;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
@@ -236,6 +237,13 @@ public class AbstractVisitor implements Visitor{
 
 	@Override
 	public Object visit(VoidType voidType, Object param) {
+		return null;
+	}
+
+	@Override
+	public Object visit(AssignmentLogical assignmentLogical, Object param) {
+		assignmentLogical.getExp1().accept(this, param);
+		assignmentLogical.getExp2().accept(this, param);
 		return null;
 	}
 

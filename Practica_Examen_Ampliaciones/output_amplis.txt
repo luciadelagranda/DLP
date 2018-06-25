@@ -1,0 +1,31 @@
+#source "input_amplis.txt"
+	' * VariableDef [type=IntType [int], Offset=0, scope=0]
+	' * VariableDef [type=IntType [int], Offset=2, scope=0]
+
+ ' Invocation to the main function
+CALL main
+HALT
+main:
+	' * Parameters
+
+	' * Local variables
+
+ENTER 0
+
+#line	5
+
+PUSHA 0
+PUSHI 0
+STOREI
+
+#line	6
+
+PUSHA 0
+LOADI
+PUSHI 0
+OR
+PUSHA 0
+PUSHI 0
+STOREI
+OUTI
+RET 0,0,0

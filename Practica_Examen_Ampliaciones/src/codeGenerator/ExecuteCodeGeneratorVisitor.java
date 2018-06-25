@@ -1,6 +1,7 @@
 package codeGenerator;
 
 import ast.Assignment;
+import ast.AssignmentLogical;
 import ast.Definition;
 import ast.FunDefinition;
 import ast.IfStatement;

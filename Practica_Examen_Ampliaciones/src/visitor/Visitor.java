@@ -3,6 +3,7 @@ package visitor;
 import ast.Arithmetic;
 
 import ast.Assignment;
+import ast.AssignmentLogical;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
@@ -96,6 +97,8 @@ public interface Visitor {
 	Object visit(IntType intType, Object param);
 
 	Object visit(VoidType voidType, Object param);
+
+	Object visit(AssignmentLogical assignmentLogical, Object param);
 	
 	
 	

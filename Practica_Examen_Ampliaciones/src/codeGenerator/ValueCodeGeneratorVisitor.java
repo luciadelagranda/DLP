@@ -1,6 +1,7 @@
 package codeGenerator;
 
 import ast.Arithmetic;
+import ast.AssignmentLogical;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
@@ -141,6 +142,24 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		return null;
 
 	}
+	
+	@Override
+	public Object visit(AssignmentLogical logical, Object param) {
+		logical.getExp1().accept(this, param);
+		cg.convertion(logical.getExp1().getType(), logical.getType());
+		logical.getExp2().accept(this, param);
+		cg.convertion(logical.getExp2().getType(), logical.getType());
+		cg.logica(logical.getOperator());
+		
+		logical.getExp1().accept(cgAddress, param);
+		logical.getExp2().accept(this, param);
+		cg.convertion(logical.getExp1().getType(), logical.getExp2().getType());
+		cg.store(logical.getExp1().getType());
+		return null;
+
+	}
+	
+	
 
 }
 

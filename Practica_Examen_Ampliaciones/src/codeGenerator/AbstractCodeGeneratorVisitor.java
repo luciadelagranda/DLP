@@ -2,6 +2,7 @@ package codeGenerator;
 
 import ast.Arithmetic;
 import ast.Assignment;
+import ast.AssignmentLogical;
 import ast.Cast;
 import ast.CharLiteral;
 import ast.Comparison;
@@ -211,6 +212,11 @@ public class AbstractCodeGeneratorVisitor implements Visitor {
 	public Object visit(VoidType voidType, Object param) {
 		throw new IllegalStateException("Plantilla no definida, void type");
 
+	}
+
+	@Override
+	public Object visit(AssignmentLogical assignmentLogical, Object param) {
+		throw new IllegalStateException("Plantilla no definida, Assigancion logica");
 	}
 
 }

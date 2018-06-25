@@ -60,7 +60,7 @@ public class IntType extends TypeAbstract{
 
 	@Override
 	public Type logical(Type type) {
-		if (type instanceof IntType)
+		if (type instanceof IntType || type instanceof CharType)
 			return this;
 		else if (type instanceof ErrorType)
 			return type;
