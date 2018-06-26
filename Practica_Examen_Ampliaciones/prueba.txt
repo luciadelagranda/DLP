@@ -1,21 +1,720 @@
-#source "input_amplis.txt"
-	' * VariableDef [type=CharType [char], Offset=0, scope=0]
+#source "big.input.txt"
+	' * VariableDef [type=RecordType [fields=[RecordField [name=integer, type=IntType [int], offset=0], RecordField [name=character, type=CharType [char], offset=2]]], Offset=0, scope=0]
+	' * VariableDef [type=ArrayType [size=2, of=RecordType [fields=[RecordField [name=employees, type=ArrayType [size=2, of=RecordType [fields=[RecordField [name=age, type=IntType [int], offset=0]]]], offset=0]]]], Offset=3, scope=0]
+	' * VariableDef [type=ArrayType [size=8, of=ArrayType [size=3, of=IntType [int]]], Offset=11, scope=0]
 
  ' Invocation to the main function
 CALL main
 HALT
-main:
+p:
 	' * Parameters
 
 	' * Local variables
 
 ENTER 0
+RET 0,0,0
+f:
+	' * Parameters
+	' * VariableDef [type=DoubleType [double], Offset=6, scope=1]
+	' * VariableDef [type=IntType [int], Offset=4, scope=1]
 
-#line	3
+	' * Local variables
+	' * VariableDef [type=DoubleType [double], Offset=-4, scope=1]
+	' * VariableDef [type=CharType [char], Offset=-5, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-7, scope=1]
 
-PUSHA 0
-PUSHF 1.2
-F2I
+ENTER 7
+
+#line	20
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSH BP
+PUSHI 6
+ADDI
+LOADF
+PUSHF 10.0
+MULF
+STOREF
+
+#line	21
+
+PUSH BP
+PUSHI -5
+ADDI
+PUSHB 48
+STOREB
+
+#line	27
+
+PUSH BP
+PUSHI 4
+ADDI
+LOADI
+PUSHI 256
+LTI
+JZ label1
+
+#line	23
+
+PUSH BP
+PUSHI -5
+ADDI
+PUSH BP
+PUSHI 4
+ADDI
+LOADI
 I2B
 STOREB
-RET 0,0,0
+
+#line	24
+
+PUSH BP
+PUSHI -7
+ADDI
+PUSH BP
+PUSHI -5
+ADDI
+LOADB
+B2I
+STOREI
+JMP label2
+label1:
+
+#line	27
+
+PUSH BP
+PUSHI -7
+ADDI
+PUSH BP
+PUSHI -4
+ADDI
+LOADF
+F2I
+STOREI
+label2:
+
+#line	28
+
+PUSH BP
+PUSHI -7
+ADDI
+LOADI
+RET 2,7,6
+initialize:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+
+ENTER 2
+
+#line	33
+
+PUSHA 11
+PUSHI 0
+PUSHI 6
+MULI
+ADDI
+PUSHI 0
+PUSHI 2
+MULI
+ADDI
+PUSHI 0
+STOREI
+
+#line	34
+
+PUSHA 11
+PUSHI 0
+PUSHI 6
+MULI
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+PUSHI 1
+STOREI
+
+#line	35
+
+PUSHA 11
+PUSHI 0
+PUSHI 6
+MULI
+ADDI
+PUSHI 2
+PUSHI 2
+MULI
+ADDI
+PUSHI 1
+STOREI
+
+#line	36
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSHI 1
+STOREI
+
+#line	42
+
+label3:
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 8
+LTI
+JZ label4
+
+#line	38
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 0
+PUSHI 2
+MULI
+ADDI
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+SUBI
+PUSHI 6
+MULI
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+LOADI
+STOREI
+
+#line	39
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+SUBI
+PUSHI 6
+MULI
+ADDI
+PUSHI 2
+PUSHI 2
+MULI
+ADDI
+LOADI
+STOREI
+
+#line	40
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 2
+PUSHI 2
+MULI
+ADDI
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 0
+PUSHI 2
+MULI
+ADDI
+LOADI
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+LOADI
+ADDI
+STOREI
+
+#line	41
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label3
+label4:
+RET 0,2,0
+main:
+	' * Parameters
+
+	' * Local variables
+	' * VariableDef [type=IntType [int], Offset=-2, scope=1]
+	' * VariableDef [type=IntType [int], Offset=-4, scope=1]
+
+ENTER 4
+
+#line	49
+
+CALL p
+
+#line	50
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSHI 0
+STOREI
+
+#line	51
+
+PUSHA 0
+PUSHI 2
+ADDI
+PUSHB 48
+STOREB
+
+#line	52
+
+PUSHA 0
+PUSHI 0
+ADDI
+PUSHB 48
+B2I
+STOREI
+
+#line	55
+
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+I2F
+PUSHA 0
+PUSHI 2
+ADDI
+LOADB
+B2I
+CALL f
+OUTI
+
+#line	55
+
+PUSHB 10
+OUTB
+
+#line	56
+
+PUSHF 1.3
+PUSHI 2
+CALL f
+POPI
+
+#line	58
+
+CALL initialize
+
+#line	59
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSHI 0
+STOREI
+
+#line	66
+
+label5:
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 8
+LTI
+JZ label6
+
+#line	64
+
+PUSHB 40
+OUTB
+
+#line	64
+
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+ADDI
+OUTI
+
+#line	64
+
+PUSHB 41
+OUTB
+
+#line	64
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 0
+PUSHI 2
+MULI
+ADDI
+LOADI
+OUTI
+
+#line	64
+
+PUSHB 43
+OUTB
+
+#line	64
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+LOADI
+OUTI
+
+#line	64
+
+PUSHB 61
+OUTB
+
+#line	64
+
+PUSHA 11
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 6
+MULI
+ADDI
+PUSHI 2
+PUSHI 2
+MULI
+ADDI
+LOADI
+OUTI
+
+#line	64
+
+PUSHB 10
+OUTB
+
+#line	65
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label5
+label6:
+
+#line	68
+
+PUSHA 3
+PUSHI 1
+PUSHI 4
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSHI 56
+STOREI
+
+#line	70
+
+PUSHA 3
+PUSHI 1
+PUSHI 4
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSHI 1
+PUSHI 2
+MULI
+ADDI
+PUSHI 0
+ADDI
+LOADI
+OUTI
+
+#line	70
+
+PUSHB 10
+OUTB
+
+#line	71
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSHI 0
+STOREI
+
+#line	79
+
+label7:
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 2
+LTI
+JZ label8
+
+#line	73
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSHI 0
+STOREI
+
+#line	77
+
+label9:
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 2
+LTI
+JZ label10
+
+#line	75
+
+PUSHA 3
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 4
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 2
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+ADDI
+STOREI
+
+#line	76
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label9
+label10:
+
+#line	78
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label7
+label8:
+
+#line	81
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSHI 0
+STOREI
+
+#line	90
+
+label11:
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 2
+LTI
+JZ label12
+
+#line	83
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSHI 0
+STOREI
+
+#line	88
+
+label13:
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 2
+LTI
+JZ label14
+
+#line	86
+
+PUSHA 3
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 4
+MULI
+ADDI
+PUSHI 0
+ADDI
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 2
+MULI
+ADDI
+PUSHI 0
+ADDI
+LOADI
+OUTI
+
+#line	86
+
+PUSHB 32
+OUTB
+
+#line	87
+
+PUSH BP
+PUSHI -4
+ADDI
+PUSH BP
+PUSHI -4
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label13
+label14:
+
+#line	89
+
+PUSH BP
+PUSHI -2
+ADDI
+PUSH BP
+PUSHI -2
+ADDI
+LOADI
+PUSHI 1
+ADDI
+STOREI
+JMP label11
+label12:
+RET 0,4,0
