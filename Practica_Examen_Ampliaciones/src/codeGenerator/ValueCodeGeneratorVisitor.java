@@ -97,7 +97,7 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		unarySum.getOperand().accept(cgAddress, param);
 		unarySum.getOperand().accept(this, param);
 		cg.push(1);
-		cg.convertion(IntType.getInstancia(), unarySum.getType());
+		cg.convertion(IntType.IntTypeInstance(unarySum.getLine(), unarySum.getColum()), unarySum.getType());
 		cg.add(unarySum.getType()); 
 		cg.store(unarySum.getType()); 
 		unarySum.getOperand().accept(this, param); 
@@ -108,7 +108,7 @@ public class ValueCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	public Object visit(UnaryMinus unaryMinus, Object param) {
 		unaryMinus.getOperand().accept(this, param);
 		cg.push(-1);
-		cg.convertion(IntType.getInstancia(), unaryMinus.getType());
+		cg.convertion(IntType.IntTypeInstance(unaryMinus.getLine(), unaryMinus.getColum()), unaryMinus.getType());
 		cg.mul(unaryMinus.getOperand().getType());
 		return null;
 	}

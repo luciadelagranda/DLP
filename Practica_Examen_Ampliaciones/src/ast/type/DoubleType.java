@@ -49,11 +49,11 @@ public class DoubleType extends TypeAbstract {
 	}
 
 	@Override
-	public Type comparison(Type expresion) {
-		if (expresion instanceof DoubleType || expresion instanceof CharType || expresion instanceof IntType) {
-			return IntType.getInstancia();
-		} else if (expresion instanceof ErrorType) {
-			return expresion;
+	public Type comparison(Type expression) {
+		if (expression instanceof DoubleType || expression instanceof CharType || expression instanceof IntType) {
+			return IntType.IntTypeInstance(expression.getLine(), expression.getColum());
+		} else if (expression instanceof ErrorType) {
+			return expression;
 		}
 
 		return null;
@@ -77,10 +77,6 @@ public class DoubleType extends TypeAbstract {
 	public char suffix() {
 		return 'F';
 	}
-
-	public static Type getInstancia() {
-		return instancia;
-	}
 	
 	@Override
 	public Type superType(Type type) {
@@ -91,4 +87,6 @@ public class DoubleType extends TypeAbstract {
 
 		return null;
 	}
+	
+	
 }

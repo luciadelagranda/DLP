@@ -15,6 +15,7 @@ import ast.VarDefinition;
 import ast.Variable;
 import ast.WhileSetatement;
 import ast.Write;
+import ast.type.DoubleType;
 import ast.type.FunctionType;
 import ast.type.IntType;
 import ast.type.Type;
@@ -180,7 +181,7 @@ public class ExecuteCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor{
 		unarySum.getOperand().accept(cgAddress, param);
 		unarySum.getOperand().accept(cgValue, param);
 		cg.push(1);
-		cg.convertion(IntType.getInstancia(), unarySum.getType());
+		cg.convertion(IntType.IntTypeInstance(unarySum.getLine(), unarySum.getColum()), unarySum.getType());
 		cg.add(unarySum.getType()); 
 		cg.store(unarySum.getType());
 		return null;

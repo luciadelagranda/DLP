@@ -1,6 +1,5 @@
-i:int;
+i:char;
 def main():void {
-	i=0;
-	print i++;
+	i= (char) 1.2;
 	
 }

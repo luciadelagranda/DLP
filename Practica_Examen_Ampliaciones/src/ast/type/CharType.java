@@ -41,7 +41,7 @@ public class CharType extends TypeAbstract {
 			return expression;
 		} else if (expression instanceof CharType || expression instanceof DoubleType
 				|| expression instanceof IntType) {
-			return IntType.getInstancia();
+			return IntType.IntTypeInstance(expression.getLine(), expression.getColum());
 		}
 
 		return null;
@@ -55,7 +55,7 @@ public class CharType extends TypeAbstract {
 	@Override
 	public Type logical(Type expression) {
 		if (expression instanceof CharType || expression instanceof IntType) {
-			return IntType.getInstancia();
+			return IntType.IntTypeInstance(expression.getLine(), expression.getColum());
 		} else if (expression instanceof ErrorType) {
 			return expression;
 		}
@@ -101,12 +101,10 @@ public class CharType extends TypeAbstract {
 		if (type instanceof ErrorType || type instanceof DoubleType || type instanceof IntType) 
 			return type;
 		else if (type instanceof CharType) 
-			return IntType.getInstancia();
+			return IntType.IntTypeInstance(type.getLine(), type.getColum());
 
 		return null;
 	}
-
-	public static Object getInstancia() {
-		return instancia;
-	}
+	
+	
 }

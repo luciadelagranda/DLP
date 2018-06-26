@@ -265,7 +265,7 @@ public class CodeGeneration {
 		if (type.suffix() != 'F')
 			out.println("MOD" + type.suffix());
 		else {
-			convertion(type, IntType.getInstancia());
+			convertion(type, IntType.IntTypeInstance(type.getLine(), type.getColum()));
 			out.println("MODI");
 		}
 
@@ -274,19 +274,19 @@ public class CodeGeneration {
 	}
 
 	public void cast(Type typeToCast, Type castType) {
-		if (typeToCast.equals(CharType.getInstancia()) && castType.equals(IntType.getInstancia()))
+		if (typeToCast.equals(CharType.CharTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(IntType.IntTypeInstance(typeToCast.getLine(), typeToCast.getColum())))
 			b2i();
-		else if (typeToCast.equals(CharType.getInstancia()) && castType.equals(DoubleType.getInstancia())) {
+		else if (typeToCast.equals(CharType.CharTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(DoubleType.DoubleTypeInstance(typeToCast.getLine(), typeToCast.getColum()))) {
 			b2i();
 			i2f();
-		} else if (typeToCast.equals(IntType.getInstancia()) && castType.equals(DoubleType.getInstancia()))
+		} else if (typeToCast.equals(IntType.IntTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(DoubleType.DoubleTypeInstance(typeToCast.getLine(), typeToCast.getColum())))
 			i2f();
-		else if (typeToCast.equals(IntType.getInstancia()) && castType.equals(CharType.getInstancia()))
+		else if (typeToCast.equals(IntType.IntTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(CharType.CharTypeInstance(typeToCast.getLine(), typeToCast.getColum())))
 			i2b();
-		else if (typeToCast.equals(DoubleType.getInstancia()) && castType.equals(CharType.getInstancia())) {
+		else if (typeToCast.equals(DoubleType.DoubleTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(CharType.CharTypeInstance(typeToCast.getLine(), typeToCast.getColum()))) {
 			f2i();
 			i2b();
-		} else if (typeToCast.equals(DoubleType.getInstancia()) && castType.equals(IntType.getInstancia()))
+		} else if (typeToCast.equals(DoubleType.DoubleTypeInstance(typeToCast.getLine(), typeToCast.getColum())) && castType.equals(IntType.IntTypeInstance(typeToCast.getLine(), typeToCast.getColum())))
 			f2i();
 	}
 
