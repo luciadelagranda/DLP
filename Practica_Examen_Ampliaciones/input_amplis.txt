@@ -1,5 +1,32 @@
-i:char;
+i:int;
+x:[8]int;
+y:[9]double;
+f:[9]char;
+j:double;
+k:char;
+
+def error():void {}
 def main():void {
-	i= (char) 1.2;
+	
+	i=0;
+	j=2.3;
+	k='a';
+	
+	while i<2:{
+		x[i]=i;
+		y[i]=j;
+		f[i]=k;
+		#ERROR k++;
+		i++;
+		j++;
+	}
+	
+	#ERROR error()++;
+	i++;
+	print i++;
+	i&&=1;
+	print i&&=1;
+	i||=1;
+	print i||=1;
 	
 }

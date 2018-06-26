@@ -1,10 +1,21 @@
 #source "input_amplis.txt"
 	' * VariableDef [type=IntType [int], Offset=0, scope=0]
-	' * VariableDef [type=IntType [int], Offset=2, scope=0]
+	' * VariableDef [type=ArrayType [size=8, of=IntType [int]], Offset=2, scope=0]
+	' * VariableDef [type=ArrayType [size=9, of=DoubleType [double]], Offset=18, scope=0]
+	' * VariableDef [type=ArrayType [size=9, of=CharType [char]], Offset=54, scope=0]
+	' * VariableDef [type=DoubleType [double], Offset=63, scope=0]
+	' * VariableDef [type=CharType [char], Offset=67, scope=0]
 
  ' Invocation to the main function
 CALL main
 HALT
+error:
+	' * Parameters
+
+	' * Local variables
+
+ENTER 0
+RET 0,0,0
 main:
 	' * Parameters
 
@@ -12,15 +23,101 @@ main:
 
 ENTER 0
 
-#line	5
+#line	11
 
 PUSHA 0
 PUSHI 0
 STOREI
 
-#line	6
+#line	12
+
+PUSHA 63
+PUSHF 2.3
+STOREF
+
+#line	13
+
+PUSHA 67
+PUSHB 97
+STOREB
+
+#line	22
+
+label1:
+PUSHA 0
+LOADI
+PUSHI 2
+LTI
+JZ label2
+
+#line	16
 
 PUSHA 2
+PUSHA 0
+LOADI
+PUSHI 2
+MULI
+ADDI
+PUSHA 0
+LOADI
+STOREI
+
+#line	17
+
+PUSHA 18
+PUSHA 0
+LOADI
+PUSHI 4
+MULI
+ADDI
+PUSHA 63
+LOADF
+STOREF
+
+#line	18
+
+PUSHA 54
+PUSHA 0
+LOADI
+PUSHI 1
+MULI
+ADDI
+PUSHA 67
+LOADB
+STOREB
+
+#line	20
+
+PUSHA 0
+PUSHA 0
+LOADI
+PUSHI 1
+ADDI
+STOREI
+
+#line	21
+
+PUSHA 63
+PUSHA 63
+LOADF
+PUSHI 1
+I2F
+ADDF
+STOREF
+JMP label1
+label2:
+
+#line	25
+
+PUSHA 0
+PUSHA 0
+LOADI
+PUSHI 1
+ADDI
+STOREI
+
+#line	26
+
 PUSHA 0
 PUSHA 0
 LOADI
@@ -29,40 +126,45 @@ ADDI
 STOREI
 PUSHA 0
 LOADI
-STOREI
+OUTI
 
-#line	7
+#line	27
 
-PUSHA 2
 PUSHA 0
 PUSHA 0
 LOADI
 PUSHI 1
-ADDI
+AND
 STOREI
+
+#line	28
+
 PUSHA 0
 LOADI
+PUSHI 1
+AND
+PUSHA 0
+PUSHI 1
 STOREI
+OUTI
 
-#line	8
+#line	29
 
-PUSHA 2
 PUSHA 0
 PUSHA 0
 LOADI
 PUSHI 1
-ADDI
+OR
 STOREI
+
+#line	30
+
 PUSHA 0
 LOADI
-STOREI
-
-#line	9
-
-PUSHA 2
-PUSHA 2
-LOADI
 PUSHI 1
-ADDI
+OR
+PUSHA 0
+PUSHI 1
 STOREI
+OUTI
 RET 0,0,0
