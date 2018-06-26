@@ -60,7 +60,7 @@ public class IntType extends TypeAbstract{
 
 	@Override
 	public Type logical(Type type) {
-		if (type instanceof IntType)
+		if (type instanceof IntType || type instanceof CharType)
 			return this;
 		else if (type instanceof ErrorType)
 			return type;
@@ -86,10 +86,6 @@ public class IntType extends TypeAbstract{
 		return null;
 	}
 
-	public static IntType getInstancia() {
-		return instancia;
-	}
-
 	@Override
 	public int numberOfBytes() {
 		return 2;
@@ -107,8 +103,10 @@ public class IntType extends TypeAbstract{
 		else if (type instanceof CharType || type instanceof IntType) 
 			return this;
 		else if (type instanceof DoubleType)
-			return DoubleType.getInstancia();
+			return DoubleType.DoubleTypeInstance(type.getLine(), type.getColum());
 
 		return null;
 	}
+	
+	
 }

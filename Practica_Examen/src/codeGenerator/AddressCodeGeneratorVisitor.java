@@ -24,7 +24,7 @@ public class AddressCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		else {
 			cg.pushbp();
 			cg.push(varDef.getOffset());
-			cg.add(IntType.getInstancia());
+			cg.add(IntType.IntTypeInstance(var.getLine(), var.getColum()));
 		}
 		
 		return null;
@@ -35,7 +35,7 @@ public class AddressCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 	public Object visit(FieldAccess fieldAccess, Object param) {
 		fieldAccess.getExp1().accept(this, param);
 		cg.push(fieldAccess.getExp1().getType().get(fieldAccess.getName()).getOffset());
-		cg.add(IntType.getInstancia());
+		cg.add(IntType.IntTypeInstance(fieldAccess.getLine(), fieldAccess.getColum()));
 		return null;
 	}
 	
@@ -44,8 +44,8 @@ public class AddressCodeGeneratorVisitor extends AbstractCodeGeneratorVisitor {
 		index.getExp1().accept(this, param);
 		index.getExp2().accept(cgValue, param);
 		cg.push(index.getType().numberOfBytes());
-		cg.mul(IntType.getInstancia());
-		cg.add(IntType.getInstancia());
+		cg.mul(IntType.IntTypeInstance(index.getLine(), index.getColum()));
+		cg.add(IntType.IntTypeInstance(index.getLine(), index.getColum()));
 		return null;
 	}
 
